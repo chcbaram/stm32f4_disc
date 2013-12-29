@@ -1,0 +1,365 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 3
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 2
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.file	"Hw_Led.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.section	.text.Hw_Led_Init,"ax",%progbits
+  21              		.align	2
+  22              		.global	Hw_Led_Init
+  23              		.thumb
+  24              		.thumb_func
+  26              	Hw_Led_Init:
+  27              	.LFB0:
+  28              		.file 1 "../LIB_HW/Driver/Hw_Led.c"
+   1:../LIB_HW/Driver/Hw_Led.c **** //----------------------------------------------------------------------------
+   2:../LIB_HW/Driver/Hw_Led.c **** //    프로그램명 	: LED 관련 함수
+   3:../LIB_HW/Driver/Hw_Led.c **** //
+   4:../LIB_HW/Driver/Hw_Led.c **** //    만든이     	: 
+   5:../LIB_HW/Driver/Hw_Led.c **** //
+   6:../LIB_HW/Driver/Hw_Led.c **** //    날  짜     	: 
+   7:../LIB_HW/Driver/Hw_Led.c **** //    
+   8:../LIB_HW/Driver/Hw_Led.c **** //    최종 수정  	:
+   9:../LIB_HW/Driver/Hw_Led.c **** //
+  10:../LIB_HW/Driver/Hw_Led.c **** //    MPU_Type		:
+  11:../LIB_HW/Driver/Hw_Led.c **** //
+  12:../LIB_HW/Driver/Hw_Led.c **** //    파일명     	: Hw_Led.c
+  13:../LIB_HW/Driver/Hw_Led.c **** //----------------------------------------------------------------------------
+  14:../LIB_HW/Driver/Hw_Led.c **** 
+  15:../LIB_HW/Driver/Hw_Led.c **** 
+  16:../LIB_HW/Driver/Hw_Led.c **** //----- 헤더파일 열기
+  17:../LIB_HW/Driver/Hw_Led.c **** //
+  18:../LIB_HW/Driver/Hw_Led.c **** #define  HW_LED_LOCAL
+  19:../LIB_HW/Driver/Hw_Led.c **** 
+  20:../LIB_HW/Driver/Hw_Led.c **** 
+  21:../LIB_HW/Driver/Hw_Led.c **** #include "Hw_Led.h"
+  22:../LIB_HW/Driver/Hw_Led.c **** 
+  23:../LIB_HW/Driver/Hw_Led.c **** 
+  24:../LIB_HW/Driver/Hw_Led.c **** 
+  25:../LIB_HW/Driver/Hw_Led.c **** 
+  26:../LIB_HW/Driver/Hw_Led.c **** 
+  27:../LIB_HW/Driver/Hw_Led.c **** /*---------------------------------------------------------------------------
+  28:../LIB_HW/Driver/Hw_Led.c ****      TITLE   : Hw_Led_Init
+  29:../LIB_HW/Driver/Hw_Led.c ****      WORK    : 
+  30:../LIB_HW/Driver/Hw_Led.c ****      ARG     : void
+  31:../LIB_HW/Driver/Hw_Led.c ****      RET     : void
+  32:../LIB_HW/Driver/Hw_Led.c **** ---------------------------------------------------------------------------*/
+  33:../LIB_HW/Driver/Hw_Led.c **** void Hw_Led_Init( void )
+  34:../LIB_HW/Driver/Hw_Led.c **** {
+  29              		.loc 1 34 0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  35:../LIB_HW/Driver/Hw_Led.c **** 
+  36:../LIB_HW/Driver/Hw_Led.c **** 	REG_GPIOG_MODER 	&= ~(0x03 << (13*2));	// PG.13 MODE Clear
+  34              		.loc 1 36 0
+  35 0000 4FF4C053 		mov	r3, #6144
+  36 0004 C4F20203 		movt	r3, 16386
+  37:../LIB_HW/Driver/Hw_Led.c **** 	REG_GPIOG_MODER 	|=  (0x01 << (13*2));	// PG.13 General purpose output mode
+  38:../LIB_HW/Driver/Hw_Led.c **** 	REG_GPIOG_OTYPER 	&= ~(0x01 << (13*1));	// PG.13 Output push-pull 
+  37              		.loc 1 38 0
+  38 0008 41F60401 		movw	r1, #6148
+  36:../LIB_HW/Driver/Hw_Led.c **** 	REG_GPIOG_MODER 	&= ~(0x03 << (13*2));	// PG.13 MODE Clear
+  39              		.loc 1 36 0
+  40 000c 1A68     		ldr	r2, [r3, #0]
+  41 000e 22F04060 		bic	r0, r2, #201326592
+  42 0012 1860     		str	r0, [r3, #0]
+  37:../LIB_HW/Driver/Hw_Led.c **** 	REG_GPIOG_MODER 	|=  (0x01 << (13*2));	// PG.13 General purpose output mode
+  43              		.loc 1 37 0
+  44 0014 1A68     		ldr	r2, [r3, #0]
+  45              		.loc 1 38 0
+  46 0016 C4F20201 		movt	r1, 16386
+  37:../LIB_HW/Driver/Hw_Led.c **** 	REG_GPIOG_MODER 	|=  (0x01 << (13*2));	// PG.13 General purpose output mode
+  47              		.loc 1 37 0
+  48 001a 42F08060 		orr	r0, r2, #67108864
+  49 001e 1860     		str	r0, [r3, #0]
+  50              		.loc 1 38 0
+  51 0020 0B68     		ldr	r3, [r1, #0]
+  39:../LIB_HW/Driver/Hw_Led.c **** 
+  40:../LIB_HW/Driver/Hw_Led.c **** 	REG_GPIOG_OSPEEDR 	&= ~(0x03 << (13*2));	// PG.13 SPEED Clear
+  52              		.loc 1 40 0
+  53 0022 41F60802 		movw	r2, #6152
+  54 0026 C4F20202 		movt	r2, 16386
+  38:../LIB_HW/Driver/Hw_Led.c **** 	REG_GPIOG_OTYPER 	&= ~(0x01 << (13*1));	// PG.13 Output push-pull 
+  55              		.loc 1 38 0
+  56 002a 23F40050 		bic	r0, r3, #8192
+  57 002e 0860     		str	r0, [r1, #0]
+  58              		.loc 1 40 0
+  59 0030 1168     		ldr	r1, [r2, #0]
+  60 0032 21F04063 		bic	r3, r1, #201326592
+  61 0036 1360     		str	r3, [r2, #0]
+  41:../LIB_HW/Driver/Hw_Led.c **** 	REG_GPIOG_OSPEEDR 	|=  (0x03 << (13*2));	// PG.13 High speed
+  62              		.loc 1 41 0
+  63 0038 1068     		ldr	r0, [r2, #0]
+  42:../LIB_HW/Driver/Hw_Led.c **** 
+  43:../LIB_HW/Driver/Hw_Led.c **** 	REG_GPIOG_PUPDR 	&= ~(0x03 << (13*2));	// PG.13 Clear
+  64              		.loc 1 43 0
+  65 003a 41F60C03 		movw	r3, #6156
+  66 003e C4F20203 		movt	r3, 16386
+  41:../LIB_HW/Driver/Hw_Led.c **** 	REG_GPIOG_OSPEEDR 	|=  (0x03 << (13*2));	// PG.13 High speed
+  67              		.loc 1 41 0
+  68 0042 40F04061 		orr	r1, r0, #201326592
+  69 0046 1160     		str	r1, [r2, #0]
+  70              		.loc 1 43 0
+  71 0048 1A68     		ldr	r2, [r3, #0]
+  72 004a 22F04060 		bic	r0, r2, #201326592
+  73 004e 1860     		str	r0, [r3, #0]
+  44:../LIB_HW/Driver/Hw_Led.c **** 	REG_GPIOG_PUPDR 	|=  (0x01 << (13*2));	// PG.13 0:Float, 1:Pull-up, 2:Pull-down, 
+  74              		.loc 1 44 0
+  75 0050 1968     		ldr	r1, [r3, #0]
+  76              	.LBB4:
+  77              	.LBB5:
+  45:../LIB_HW/Driver/Hw_Led.c **** 		
+  46:../LIB_HW/Driver/Hw_Led.c **** 
+  47:../LIB_HW/Driver/Hw_Led.c **** 	Hw_Led_Off(0);
+  48:../LIB_HW/Driver/Hw_Led.c **** }
+  49:../LIB_HW/Driver/Hw_Led.c **** 
+  50:../LIB_HW/Driver/Hw_Led.c **** 
+  51:../LIB_HW/Driver/Hw_Led.c **** 
+  52:../LIB_HW/Driver/Hw_Led.c **** 
+  53:../LIB_HW/Driver/Hw_Led.c **** 
+  54:../LIB_HW/Driver/Hw_Led.c **** /*---------------------------------------------------------------------------
+  55:../LIB_HW/Driver/Hw_Led.c ****      TITLE   : Hw_Led_On
+  56:../LIB_HW/Driver/Hw_Led.c ****      WORK    :
+  57:../LIB_HW/Driver/Hw_Led.c ****      ARG     : void
+  58:../LIB_HW/Driver/Hw_Led.c ****      RET     : void
+  59:../LIB_HW/Driver/Hw_Led.c **** ---------------------------------------------------------------------------*/
+  60:../LIB_HW/Driver/Hw_Led.c **** void Hw_Led_On( u8 Ch )
+  61:../LIB_HW/Driver/Hw_Led.c **** {	
+  62:../LIB_HW/Driver/Hw_Led.c **** 	switch( Ch )
+  63:../LIB_HW/Driver/Hw_Led.c **** 	{
+  64:../LIB_HW/Driver/Hw_Led.c **** 		case 0:
+  65:../LIB_HW/Driver/Hw_Led.c **** 			SET_BIT( REG_GPIOG_ODR, 13 );
+  66:../LIB_HW/Driver/Hw_Led.c **** 			break;
+  67:../LIB_HW/Driver/Hw_Led.c **** 	}
+  68:../LIB_HW/Driver/Hw_Led.c **** }
+  69:../LIB_HW/Driver/Hw_Led.c **** 
+  70:../LIB_HW/Driver/Hw_Led.c **** 
+  71:../LIB_HW/Driver/Hw_Led.c **** 
+  72:../LIB_HW/Driver/Hw_Led.c **** 
+  73:../LIB_HW/Driver/Hw_Led.c **** 
+  74:../LIB_HW/Driver/Hw_Led.c **** /*---------------------------------------------------------------------------
+  75:../LIB_HW/Driver/Hw_Led.c ****      TITLE   : Hw_Led_On
+  76:../LIB_HW/Driver/Hw_Led.c ****      WORK    :
+  77:../LIB_HW/Driver/Hw_Led.c ****      ARG     : void
+  78:../LIB_HW/Driver/Hw_Led.c ****      RET     : void
+  79:../LIB_HW/Driver/Hw_Led.c **** ---------------------------------------------------------------------------*/
+  80:../LIB_HW/Driver/Hw_Led.c **** void Hw_Led_Off( u8 Ch )
+  81:../LIB_HW/Driver/Hw_Led.c **** {
+  82:../LIB_HW/Driver/Hw_Led.c **** 	switch( Ch )
+  83:../LIB_HW/Driver/Hw_Led.c **** 	{
+  84:../LIB_HW/Driver/Hw_Led.c **** 		case 0:
+  85:../LIB_HW/Driver/Hw_Led.c **** 			CLR_BIT( REG_GPIOG_ODR, 13 );
+  78              		.loc 1 85 0
+  79 0052 41F61402 		movw	r2, #6164
+  80 0056 C4F20202 		movt	r2, 16386
+  81              	.LBE5:
+  82              	.LBE4:
+  44:../LIB_HW/Driver/Hw_Led.c **** 	REG_GPIOG_PUPDR 	|=  (0x01 << (13*2));	// PG.13 0:Float, 1:Pull-up, 2:Pull-down, 
+  83              		.loc 1 44 0
+  84 005a 41F08060 		orr	r0, r1, #67108864
+  85 005e 1860     		str	r0, [r3, #0]
+  86              	.LVL0:
+  87              	.LBB7:
+  88              	.LBB6:
+  89              		.loc 1 85 0
+  90 0060 1368     		ldr	r3, [r2, #0]
+  91 0062 23F40051 		bic	r1, r3, #8192
+  92 0066 1160     		str	r1, [r2, #0]
+  93 0068 7047     		bx	lr
+  94              	.LBE6:
+  95              	.LBE7:
+  96              		.cfi_endproc
+  97              	.LFE0:
+  99 006a 00BF     		.section	.text.Hw_Led_On,"ax",%progbits
+ 100              		.align	2
+ 101              		.global	Hw_Led_On
+ 102              		.thumb
+ 103              		.thumb_func
+ 105              	Hw_Led_On:
+ 106              	.LFB1:
+  61:../LIB_HW/Driver/Hw_Led.c **** {	
+ 107              		.loc 1 61 0
+ 108              		.cfi_startproc
+ 109              		@ args = 0, pretend = 0, frame = 0
+ 110              		@ frame_needed = 0, uses_anonymous_args = 0
+ 111              		@ link register save eliminated.
+ 112              	.LVL1:
+  62:../LIB_HW/Driver/Hw_Led.c **** 	switch( Ch )
+ 113              		.loc 1 62 0
+ 114 0000 38B9     		cbnz	r0, .L2
+  65:../LIB_HW/Driver/Hw_Led.c **** 			SET_BIT( REG_GPIOG_ODR, 13 );
+ 115              		.loc 1 65 0
+ 116 0002 41F61403 		movw	r3, #6164
+ 117 0006 C4F20203 		movt	r3, 16386
+ 118 000a 1A68     		ldr	r2, [r3, #0]
+ 119 000c 42F40050 		orr	r0, r2, #8192
+ 120              	.LVL2:
+ 121 0010 1860     		str	r0, [r3, #0]
+ 122              	.L2:
+ 123 0012 7047     		bx	lr
+ 124              		.cfi_endproc
+ 125              	.LFE1:
+ 127              		.section	.text.Hw_Led_Off,"ax",%progbits
+ 128              		.align	2
+ 129              		.global	Hw_Led_Off
+ 130              		.thumb
+ 131              		.thumb_func
+ 133              	Hw_Led_Off:
+ 134              	.LFB2:
+  81:../LIB_HW/Driver/Hw_Led.c **** {
+ 135              		.loc 1 81 0
+ 136              		.cfi_startproc
+ 137              		@ args = 0, pretend = 0, frame = 0
+ 138              		@ frame_needed = 0, uses_anonymous_args = 0
+ 139              		@ link register save eliminated.
+ 140              	.LVL3:
+  82:../LIB_HW/Driver/Hw_Led.c **** 	switch( Ch )
+ 141              		.loc 1 82 0
+ 142 0000 38B9     		cbnz	r0, .L6
+ 143              		.loc 1 85 0
+ 144 0002 41F61403 		movw	r3, #6164
+ 145 0006 C4F20203 		movt	r3, 16386
+ 146 000a 1A68     		ldr	r2, [r3, #0]
+ 147 000c 22F40050 		bic	r0, r2, #8192
+ 148              	.LVL4:
+ 149 0010 1860     		str	r0, [r3, #0]
+ 150              	.L6:
+ 151 0012 7047     		bx	lr
+ 152              		.cfi_endproc
+ 153              	.LFE2:
+ 155              		.section	.text.Hw_Led_Toggle,"ax",%progbits
+ 156              		.align	2
+ 157              		.global	Hw_Led_Toggle
+ 158              		.thumb
+ 159              		.thumb_func
+ 161              	Hw_Led_Toggle:
+ 162              	.LFB3:
+  86:../LIB_HW/Driver/Hw_Led.c **** 			break;
+  87:../LIB_HW/Driver/Hw_Led.c **** 	}
+  88:../LIB_HW/Driver/Hw_Led.c **** }
+  89:../LIB_HW/Driver/Hw_Led.c **** 
+  90:../LIB_HW/Driver/Hw_Led.c **** 
+  91:../LIB_HW/Driver/Hw_Led.c **** 
+  92:../LIB_HW/Driver/Hw_Led.c **** 
+  93:../LIB_HW/Driver/Hw_Led.c **** 
+  94:../LIB_HW/Driver/Hw_Led.c **** /*---------------------------------------------------------------------------
+  95:../LIB_HW/Driver/Hw_Led.c ****      TITLE   : Hw_Led_On
+  96:../LIB_HW/Driver/Hw_Led.c ****      WORK    :
+  97:../LIB_HW/Driver/Hw_Led.c ****      ARG     : void
+  98:../LIB_HW/Driver/Hw_Led.c ****      RET     : void
+  99:../LIB_HW/Driver/Hw_Led.c **** ---------------------------------------------------------------------------*/
+ 100:../LIB_HW/Driver/Hw_Led.c **** void Hw_Led_Toggle( u8 Ch )
+ 101:../LIB_HW/Driver/Hw_Led.c **** {
+ 163              		.loc 1 101 0
+ 164              		.cfi_startproc
+ 165              		@ args = 0, pretend = 0, frame = 0
+ 166              		@ frame_needed = 0, uses_anonymous_args = 0
+ 167              		@ link register save eliminated.
+ 168              	.LVL5:
+ 102:../LIB_HW/Driver/Hw_Led.c **** 	switch( Ch )
+ 169              		.loc 1 102 0
+ 170 0000 38B9     		cbnz	r0, .L9
+ 103:../LIB_HW/Driver/Hw_Led.c **** 	{
+ 104:../LIB_HW/Driver/Hw_Led.c **** 		case 0:
+ 105:../LIB_HW/Driver/Hw_Led.c **** 			TGL_BIT( REG_GPIOG_ODR, 13 );
+ 171              		.loc 1 105 0
+ 172 0002 41F61403 		movw	r3, #6164
+ 173 0006 C4F20203 		movt	r3, 16386
+ 174 000a 1A68     		ldr	r2, [r3, #0]
+ 175 000c 82F40050 		eor	r0, r2, #8192
+ 176              	.LVL6:
+ 177 0010 1860     		str	r0, [r3, #0]
+ 178              	.L9:
+ 179 0012 7047     		bx	lr
+ 180              		.cfi_endproc
+ 181              	.LFE3:
+ 183              		.section	.text.Hw_Led_Wait,"ax",%progbits
+ 184              		.align	2
+ 185              		.global	Hw_Led_Wait
+ 186              		.thumb
+ 187              		.thumb_func
+ 189              	Hw_Led_Wait:
+ 190              	.LFB4:
+ 106:../LIB_HW/Driver/Hw_Led.c **** 			break;
+ 107:../LIB_HW/Driver/Hw_Led.c **** 	}
+ 108:../LIB_HW/Driver/Hw_Led.c **** }
+ 109:../LIB_HW/Driver/Hw_Led.c **** 
+ 110:../LIB_HW/Driver/Hw_Led.c **** 
+ 111:../LIB_HW/Driver/Hw_Led.c **** 
+ 112:../LIB_HW/Driver/Hw_Led.c **** 
+ 113:../LIB_HW/Driver/Hw_Led.c **** 
+ 114:../LIB_HW/Driver/Hw_Led.c **** /*---------------------------------------------------------------------------
+ 115:../LIB_HW/Driver/Hw_Led.c ****      TITLE   : Hw_Led_Wait
+ 116:../LIB_HW/Driver/Hw_Led.c ****      WORK    : 
+ 117:../LIB_HW/Driver/Hw_Led.c ****      ARG     : void
+ 118:../LIB_HW/Driver/Hw_Led.c ****      RET     : void
+ 119:../LIB_HW/Driver/Hw_Led.c **** ---------------------------------------------------------------------------*/
+ 120:../LIB_HW/Driver/Hw_Led.c **** void Hw_Led_Wait( u32 delay )
+ 121:../LIB_HW/Driver/Hw_Led.c **** {
+ 191              		.loc 1 121 0
+ 192              		.cfi_startproc
+ 193              		@ args = 0, pretend = 0, frame = 8
+ 194              		@ frame_needed = 0, uses_anonymous_args = 0
+ 195              		@ link register save eliminated.
+ 196              	.LVL7:
+ 197 0000 82B0     		sub	sp, sp, #8
+ 198              	.LCFI0:
+ 199              		.cfi_def_cfa_offset 8
+ 122:../LIB_HW/Driver/Hw_Led.c ****     volatile u32 i;
+ 123:../LIB_HW/Driver/Hw_Led.c ****     for ( i = 0 ; i < delay ; i++ ){ };
+ 200              		.loc 1 123 0
+ 201 0002 0023     		movs	r3, #0
+ 202 0004 0193     		str	r3, [sp, #4]
+ 203              	.LVL8:
+ 204 0006 0199     		ldr	r1, [sp, #4]
+ 205 0008 8842     		cmp	r0, r1
+ 206 000a 05D9     		bls	.L12
+ 207              	.L15:
+ 208 000c 019A     		ldr	r2, [sp, #4]
+ 209 000e 531C     		adds	r3, r2, #1
+ 210              	.LVL9:
+ 211 0010 0193     		str	r3, [sp, #4]
+ 212              	.LVL10:
+ 213 0012 0199     		ldr	r1, [sp, #4]
+ 214 0014 8142     		cmp	r1, r0
+ 215 0016 F9D3     		bcc	.L15
+ 216              	.L12:
+ 124:../LIB_HW/Driver/Hw_Led.c **** }
+ 217              		.loc 1 124 0
+ 218 0018 02B0     		add	sp, sp, #8
+ 219 001a 7047     		bx	lr
+ 220              		.cfi_endproc
+ 221              	.LFE4:
+ 223              		.text
+ 224              	.Letext0:
+ 225              		.file 2 "../LIB_HW/Core/Hw_Define.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 Hw_Led.c
+/var/folders/bz/nn5481rn5xq59rb0mbj7x0880000gn/T//cckdX0SV.s:21     .text.Hw_Led_Init:0000000000000000 $t
+/var/folders/bz/nn5481rn5xq59rb0mbj7x0880000gn/T//cckdX0SV.s:26     .text.Hw_Led_Init:0000000000000000 Hw_Led_Init
+/var/folders/bz/nn5481rn5xq59rb0mbj7x0880000gn/T//cckdX0SV.s:100    .text.Hw_Led_On:0000000000000000 $t
+/var/folders/bz/nn5481rn5xq59rb0mbj7x0880000gn/T//cckdX0SV.s:105    .text.Hw_Led_On:0000000000000000 Hw_Led_On
+/var/folders/bz/nn5481rn5xq59rb0mbj7x0880000gn/T//cckdX0SV.s:128    .text.Hw_Led_Off:0000000000000000 $t
+/var/folders/bz/nn5481rn5xq59rb0mbj7x0880000gn/T//cckdX0SV.s:133    .text.Hw_Led_Off:0000000000000000 Hw_Led_Off
+/var/folders/bz/nn5481rn5xq59rb0mbj7x0880000gn/T//cckdX0SV.s:156    .text.Hw_Led_Toggle:0000000000000000 $t
+/var/folders/bz/nn5481rn5xq59rb0mbj7x0880000gn/T//cckdX0SV.s:161    .text.Hw_Led_Toggle:0000000000000000 Hw_Led_Toggle
+/var/folders/bz/nn5481rn5xq59rb0mbj7x0880000gn/T//cckdX0SV.s:184    .text.Hw_Led_Wait:0000000000000000 $t
+/var/folders/bz/nn5481rn5xq59rb0mbj7x0880000gn/T//cckdX0SV.s:189    .text.Hw_Led_Wait:0000000000000000 Hw_Led_Wait
+                     .debug_frame:0000000000000010 $d
+
+NO UNDEFINED SYMBOLS
