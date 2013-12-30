@@ -1,0 +1,269 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.eabi_attribute 27, 3
+   4              		.eabi_attribute 28, 1
+   5              		.fpu fpv4-sp-d16
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 2
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.thumb
+  16              		.file	"main.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.section	.text.LED_Tick,"ax",%progbits
+  21              		.align	2
+  22              		.global	LED_Tick
+  23              		.thumb
+  24              		.thumb_func
+  26              	LED_Tick:
+  27              	.LFB0:
+  28              		.file 1 "../main.c"
+   1:../main.c     **** //----------------------------------------------------------------------------
+   2:../main.c     **** //    프로그램명 	: Radio
+   3:../main.c     **** //
+   4:../main.c     **** //    만든이     	: Cho Han Cheol (Baram)
+   5:../main.c     **** //
+   6:../main.c     **** //    날  짜     	: 2013. 8.20.
+   7:../main.c     **** //
+   8:../main.c     **** //    최종 수정  	:
+   9:../main.c     **** //
+  10:../main.c     **** //    MPU_Type		:
+  11:../main.c     **** //
+  12:../main.c     **** //    파일명     	: Main.c
+  13:../main.c     **** //----------------------------------------------------------------------------
+  14:../main.c     **** /*
+  15:../main.c     **** 	130820 
+  16:../main.c     **** 		- 초기 프로젝트 작업 시작
+  17:../main.c     **** 	130823 
+  18:../main.c     **** 		- Uart 인터럽트 구현
+  19:../main.c     **** 		
+  20:../main.c     **** */
+  21:../main.c     **** 
+  22:../main.c     **** 
+  23:../main.c     **** 
+  24:../main.c     **** 
+  25:../main.c     **** //----- 헤더파일 열기
+  26:../main.c     **** //
+  27:../main.c     **** #define  MAIN_LOCAL
+  28:../main.c     **** 
+  29:../main.c     **** #include "Main.h"
+  30:../main.c     **** 
+  31:../main.c     **** 
+  32:../main.c     **** 
+  33:../main.c     **** 
+  34:../main.c     **** //-- 내부 선언
+  35:../main.c     **** //
+  36:../main.c     **** 
+  37:../main.c     **** 
+  38:../main.c     **** 
+  39:../main.c     **** //-- 내부 변수
+  40:../main.c     **** //
+  41:../main.c     **** 
+  42:../main.c     **** 
+  43:../main.c     **** 
+  44:../main.c     **** //-- 내부 함수
+  45:../main.c     **** //
+  46:../main.c     **** static void Main_Init( void );
+  47:../main.c     **** 
+  48:../main.c     **** 
+  49:../main.c     **** 
+  50:../main.c     **** void LED_Tick( void )
+  51:../main.c     **** {
+  29              		.loc 1 51 0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+  52:../main.c     **** 	Hw_Led_Toggle(1);
+  38              		.loc 1 52 0
+  39 0002 40F20003 		movw	r3, #:lower16:Hw_Led_Toggle
+  40 0006 0120     		movs	r0, #1
+  41 0008 C0F20003 		movt	r3, #:upper16:Hw_Led_Toggle
+  42 000c 9847     		blx	r3
+  43              	.LVL0:
+  44 000e 08BD     		pop	{r3, pc}
+  45              		.cfi_endproc
+  46              	.LFE0:
+  48              		.section	.text.startup.main,"ax",%progbits
+  49              		.align	2
+  50              		.global	main
+  51              		.thumb
+  52              		.thumb_func
+  54              	main:
+  55              	.LFB1:
+  53:../main.c     **** }
+  54:../main.c     **** 
+  55:../main.c     **** 
+  56:../main.c     **** 
+  57:../main.c     **** 
+  58:../main.c     **** /*---------------------------------------------------------------------------
+  59:../main.c     ****      TITLE   :	main          
+  60:../main.c     ****      WORK    : 	
+  61:../main.c     ****      			메인 함수
+  62:../main.c     ****      ARG     : 	void
+  63:../main.c     ****      RET     : 	
+  64:../main.c     ****      			int
+  65:../main.c     **** ---------------------------------------------------------------------------*/
+  66:../main.c     **** int main(void)
+  67:../main.c     **** {
+  56              		.loc 1 67 0
+  57              		.cfi_startproc
+  58              		@ Volatile: function does not return.
+  59              		@ args = 0, pretend = 0, frame = 0
+  60              		@ frame_needed = 0, uses_anonymous_args = 0
+  61 0000 80B5     		push	{r7, lr}
+  62              	.LCFI1:
+  63              		.cfi_def_cfa_offset 8
+  64              		.cfi_offset 7, -8
+  65              		.cfi_offset 14, -4
+  66              	.LBB4:
+  67              	.LBB5:
+  68:../main.c     **** 	u8 Ch;
+  69:../main.c     **** 	u8 Ret;
+  70:../main.c     **** 	u32 i;
+  71:../main.c     **** 
+  72:../main.c     **** 
+  73:../main.c     **** 	Main_Init();
+  74:../main.c     **** 
+  75:../main.c     **** 
+  76:../main.c     **** 	//-- 명령어 처리
+  77:../main.c     **** 	//  
+  78:../main.c     **** 	//Ap_Menu_ExeCmd();    
+  79:../main.c     **** 
+  80:../main.c     **** 	while(1)
+  81:../main.c     **** 	{
+  82:../main.c     **** 		Hw_Led_On(0);
+  83:../main.c     **** 		Hw_Wait_ms(1000);
+  84:../main.c     **** 		Hw_Led_Off(0);
+  85:../main.c     **** 		Hw_Wait_ms(1000);		
+  86:../main.c     **** 	}
+  87:../main.c     ****     
+  88:../main.c     ****     while(1);
+  89:../main.c     **** 
+  90:../main.c     ****     return 0;
+  91:../main.c     **** }
+  92:../main.c     **** 
+  93:../main.c     **** 
+  94:../main.c     **** 
+  95:../main.c     **** 
+  96:../main.c     **** 
+  97:../main.c     **** /*---------------------------------------------------------------------------
+  98:../main.c     ****      TITLE   : Main_Init
+  99:../main.c     ****      WORK    :
+ 100:../main.c     ****      ARG     : void
+ 101:../main.c     ****      RET     : void
+ 102:../main.c     **** ---------------------------------------------------------------------------*/
+ 103:../main.c     **** void Main_Init( void )
+ 104:../main.c     **** {
+ 105:../main.c     **** 	Hw_Init();
+  68              		.loc 1 105 0
+  69 0002 104B     		ldr	r3, .L5
+  70 0004 104E     		ldr	r6, .L5+4
+  71 0006 114C     		ldr	r4, .L5+8
+  72 0008 114D     		ldr	r5, .L5+12
+  73              	.LBE5:
+  74              	.LBE4:
+  67:../main.c     **** {
+  75              		.loc 1 67 0
+  76 000a 82B0     		sub	sp, sp, #8
+  77              	.LCFI2:
+  78              		.cfi_def_cfa_offset 16
+  79              	.LBB7:
+  80              	.LBB6:
+  81              		.loc 1 105 0
+  82 000c 9847     		blx	r3
+  83              	.LVL1:
+ 106:../main.c     **** 	Ap_Init();
+ 107:../main.c     **** 	
+ 108:../main.c     **** 	Hw_Timer_Set  ( HW_TIMER_CH_LED, 500, LOOP_TIME, LED_Tick, NULL );
+  84              		.loc 1 108 0
+  85 000e 0027     		movs	r7, #0
+ 106:../main.c     **** 	Ap_Init();
+  86              		.loc 1 106 0
+  87 0010 1048     		ldr	r0, .L5+16
+  88 0012 8047     		blx	r0
+  89              	.LVL2:
+  90              		.loc 1 108 0
+  91 0014 4FF4FA71 		mov	r1, #500
+  92 0018 3846     		mov	r0, r7
+  93 001a 0222     		movs	r2, #2
+  94 001c 0E4B     		ldr	r3, .L5+20
+  95 001e 0097     		str	r7, [sp, #0]
+  96 0020 DFF83CC0 		ldr	ip, .L5+28
+  97 0024 E047     		blx	ip
+  98              	.LVL3:
+ 109:../main.c     **** 	Hw_Timer_Start( HW_TIMER_CH_LED );	
+  99              		.loc 1 109 0
+ 100 0026 3846     		mov	r0, r7
+ 101 0028 0C49     		ldr	r1, .L5+24
+ 102 002a 8847     		blx	r1
+ 103              	.LVL4:
+ 104              	.L3:
+ 105              	.LBE6:
+ 106              	.LBE7:
+  82:../main.c     **** 		Hw_Led_On(0);
+ 107              		.loc 1 82 0 discriminator 1
+ 108 002c 0020     		movs	r0, #0
+ 109 002e B047     		blx	r6
+ 110              	.LVL5:
+  83:../main.c     **** 		Hw_Wait_ms(1000);
+ 111              		.loc 1 83 0 discriminator 1
+ 112 0030 4FF47A70 		mov	r0, #1000
+ 113 0034 A047     		blx	r4
+ 114              	.LVL6:
+  84:../main.c     **** 		Hw_Led_Off(0);
+ 115              		.loc 1 84 0 discriminator 1
+ 116 0036 0020     		movs	r0, #0
+ 117 0038 A847     		blx	r5
+ 118              	.LVL7:
+  85:../main.c     **** 		Hw_Wait_ms(1000);		
+ 119              		.loc 1 85 0 discriminator 1
+ 120 003a 4FF47A70 		mov	r0, #1000
+ 121 003e A047     		blx	r4
+ 122              	.LVL8:
+ 123 0040 F4E7     		b	.L3
+ 124              	.L6:
+ 125 0042 00BF     		.align	2
+ 126              	.L5:
+ 127 0044 00000000 		.word	Hw_Init
+ 128 0048 00000000 		.word	Hw_Led_On
+ 129 004c 00000000 		.word	Hw_Wait_ms
+ 130 0050 00000000 		.word	Hw_Led_Off
+ 131 0054 00000000 		.word	Ap_Init
+ 132 0058 00000000 		.word	LED_Tick
+ 133 005c 00000000 		.word	Hw_Timer_Start
+ 134 0060 00000000 		.word	Hw_Timer_Set
+ 135              		.cfi_endproc
+ 136              	.LFE1:
+ 138              		.text
+ 139              	.Letext0:
+ 140              		.file 2 "../LIB_HW/Core/Hw_Define.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+/var/folders/7z/kps_xzfj7sn5l5gkyq8s9db00000gn/T//ccz9Hd6Q.s:21     .text.LED_Tick:0000000000000000 $t
+/var/folders/7z/kps_xzfj7sn5l5gkyq8s9db00000gn/T//ccz9Hd6Q.s:26     .text.LED_Tick:0000000000000000 LED_Tick
+/var/folders/7z/kps_xzfj7sn5l5gkyq8s9db00000gn/T//ccz9Hd6Q.s:49     .text.startup.main:0000000000000000 $t
+/var/folders/7z/kps_xzfj7sn5l5gkyq8s9db00000gn/T//ccz9Hd6Q.s:54     .text.startup.main:0000000000000000 main
+/var/folders/7z/kps_xzfj7sn5l5gkyq8s9db00000gn/T//ccz9Hd6Q.s:127    .text.startup.main:0000000000000044 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+Hw_Led_Toggle
+Hw_Init
+Hw_Led_On
+Hw_Wait_ms
+Hw_Led_Off
+Ap_Init
+Hw_Timer_Start
+Hw_Timer_Set

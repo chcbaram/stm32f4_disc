@@ -1,0 +1,1963 @@
+
+main.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .isr_vector   00000008  08000000  08000000  00008000  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         000007e4  08000008  08000008  00008008  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .bss          00000390  20000000  20000000  00010000  2**9
+                  ALLOC
+  3 ._user_heap_stack 00000400  20000390  20000390  00010000  2**0
+                  ALLOC
+  4 .ARM.attributes 0000003b  00000000  00000000  000087ec  2**0
+                  CONTENTS, READONLY
+  5 .debug_info   00000da2  00000000  00000000  00008827  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 0000078e  00000000  00000000  000095c9  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_loc    000006ba  00000000  00000000  00009d57  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_aranges 000001c0  00000000  00000000  0000a411  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_ranges 00000258  00000000  00000000  0000a5d1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_line   0000065a  00000000  00000000  0000a829  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_str    000004c9  00000000  00000000  0000ae83  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .comment      00000070  00000000  00000000  0000b34c  2**0
+                  CONTENTS, READONLY
+ 13 .debug_frame  00000328  00000000  00000000  0000b3bc  2**2
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+08000008 <LED_Tick>:
+static void Main_Init( void );
+
+
+
+void LED_Tick( void )
+{
+ 8000008:	b508      	push	{r3, lr}
+	Hw_Led_Toggle(1);
+ 800000a:	f240 73c1 	movw	r3, #1985	; 0x7c1
+ 800000e:	2001      	movs	r0, #1
+ 8000010:	f6c0 0300 	movt	r3, #2048	; 0x800
+ 8000014:	4798      	blx	r3
+ 8000016:	bd08      	pop	{r3, pc}
+
+08000018 <main>:
+     ARG     : 	void
+     RET     : 	
+     			int
+---------------------------------------------------------------------------*/
+int main(void)
+{
+ 8000018:	b580      	push	{r7, lr}
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Main_Init( void )
+{
+	Hw_Init();
+ 800001a:	4b10      	ldr	r3, [pc, #64]	; (800005c <main+0x44>)
+ 800001c:	4e10      	ldr	r6, [pc, #64]	; (8000060 <main+0x48>)
+ 800001e:	4c11      	ldr	r4, [pc, #68]	; (8000064 <main+0x4c>)
+ 8000020:	4d11      	ldr	r5, [pc, #68]	; (8000068 <main+0x50>)
+     ARG     : 	void
+     RET     : 	
+     			int
+---------------------------------------------------------------------------*/
+int main(void)
+{
+ 8000022:	b082      	sub	sp, #8
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Main_Init( void )
+{
+	Hw_Init();
+ 8000024:	4798      	blx	r3
+	Ap_Init();
+	
+	Hw_Timer_Set  ( HW_TIMER_CH_LED, 500, LOOP_TIME, LED_Tick, NULL );
+ 8000026:	2700      	movs	r7, #0
+     RET     : void
+---------------------------------------------------------------------------*/
+void Main_Init( void )
+{
+	Hw_Init();
+	Ap_Init();
+ 8000028:	4810      	ldr	r0, [pc, #64]	; (800006c <main+0x54>)
+ 800002a:	4780      	blx	r0
+	
+	Hw_Timer_Set  ( HW_TIMER_CH_LED, 500, LOOP_TIME, LED_Tick, NULL );
+ 800002c:	f44f 71fa 	mov.w	r1, #500	; 0x1f4
+ 8000030:	4638      	mov	r0, r7
+ 8000032:	2202      	movs	r2, #2
+ 8000034:	4b0e      	ldr	r3, [pc, #56]	; (8000070 <main+0x58>)
+ 8000036:	9700      	str	r7, [sp, #0]
+ 8000038:	f8df c03c 	ldr.w	ip, [pc, #60]	; 8000078 <main+0x60>
+ 800003c:	47e0      	blx	ip
+	Hw_Timer_Start( HW_TIMER_CH_LED );	
+ 800003e:	4638      	mov	r0, r7
+ 8000040:	490c      	ldr	r1, [pc, #48]	; (8000074 <main+0x5c>)
+ 8000042:	4788      	blx	r1
+	//  
+	//Ap_Menu_ExeCmd();    
+
+	while(1)
+	{
+		Hw_Led_On(0);
+ 8000044:	2000      	movs	r0, #0
+ 8000046:	47b0      	blx	r6
+		Hw_Wait_ms(1000);
+ 8000048:	f44f 707a 	mov.w	r0, #1000	; 0x3e8
+ 800004c:	47a0      	blx	r4
+		Hw_Led_Off(0);
+ 800004e:	2000      	movs	r0, #0
+ 8000050:	47a8      	blx	r5
+		Hw_Wait_ms(1000);		
+ 8000052:	f44f 707a 	mov.w	r0, #1000	; 0x3e8
+ 8000056:	47a0      	blx	r4
+ 8000058:	e7f4      	b.n	8000044 <main+0x2c>
+ 800005a:	bf00      	nop
+ 800005c:	08000155 	.word	0x08000155
+ 8000060:	080006b9 	.word	0x080006b9
+ 8000064:	08000181 	.word	0x08000181
+ 8000068:	080006e5 	.word	0x080006e5
+ 800006c:	0800007d 	.word	0x0800007d
+ 8000070:	08000009 	.word	0x08000009
+ 8000074:	080006a5 	.word	0x080006a5
+ 8000078:	08000685 	.word	0x08000685
+
+0800007c <Ap_Init>:
+     WORK    : 
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Ap_Init( void )
+{
+ 800007c:	4770      	bx	lr
+ 800007e:	bf00      	nop
+
+08000080 <Hw_StartUp_Init>:
+     			보드 리셋시에 처음 실행되는 함수
+     ARG     : 	void
+     RET     : 	void
+---------------------------------------------------------------------------*/
+void Hw_StartUp_Init(void)
+{
+ 8000080:	4668      	mov	r0, sp
+ 8000082:	f020 0107 	bic.w	r1, r0, #7
+ 8000086:	468d      	mov	sp, r1
+ 8000088:	b579      	push	{r0, r3, r4, r5, r6, lr}
+	//  
+	
+	// Copy the data segment initializers from flash to SRAM
+	pulSrc = &_sidata;
+
+	for(pulDest = &_sdata; pulDest < &_edata; )
+ 800008a:	492c      	ldr	r1, [pc, #176]	; (800013c <zero_loop+0x6a>)
+ 800008c:	4b2c      	ldr	r3, [pc, #176]	; (8000140 <zero_loop+0x6e>)
+ 800008e:	4299      	cmp	r1, r3
+ 8000090:	d21b      	bcs.n	80000ca <Hw_StartUp_Init+0x4a>
+     WORK    :	 
+     			보드 리셋시에 처음 실행되는 함수
+     ARG     : 	void
+     RET     : 	void
+---------------------------------------------------------------------------*/
+void Hw_StartUp_Init(void)
+ 8000092:	1cda      	adds	r2, r3, #3
+ 8000094:	1d0c      	adds	r4, r1, #4
+ 8000096:	1b15      	subs	r5, r2, r4
+ 8000098:	482a      	ldr	r0, [pc, #168]	; (8000144 <zero_loop+0x72>)
+ 800009a:	f025 0203 	bic.w	r2, r5, #3
+ 800009e:	1d16      	adds	r6, r2, #4
+	// Copy the data segment initializers from flash to SRAM
+	pulSrc = &_sidata;
+
+	for(pulDest = &_sdata; pulDest < &_edata; )
+	{
+		*(pulDest++) = *(pulSrc++);
+ 80000a0:	6805      	ldr	r5, [r0, #0]
+ 80000a2:	2304      	movs	r3, #4
+	//  
+	
+	// Copy the data segment initializers from flash to SRAM
+	pulSrc = &_sidata;
+
+	for(pulDest = &_sdata; pulDest < &_edata; )
+ 80000a4:	42b3      	cmp	r3, r6
+	{
+		*(pulDest++) = *(pulSrc++);
+ 80000a6:	600d      	str	r5, [r1, #0]
+ 80000a8:	f3c2 0280 	ubfx	r2, r2, #2, #1
+	//  
+	
+	// Copy the data segment initializers from flash to SRAM
+	pulSrc = &_sidata;
+
+	for(pulDest = &_sdata; pulDest < &_edata; )
+ 80000ac:	d00d      	beq.n	80000ca <Hw_StartUp_Init+0x4a>
+ 80000ae:	b122      	cbz	r2, 80000ba <Hw_StartUp_Init+0x3a>
+	{
+		*(pulDest++) = *(pulSrc++);
+ 80000b0:	6845      	ldr	r5, [r0, #4]
+ 80000b2:	2308      	movs	r3, #8
+	//  
+	
+	// Copy the data segment initializers from flash to SRAM
+	pulSrc = &_sidata;
+
+	for(pulDest = &_sdata; pulDest < &_edata; )
+ 80000b4:	42b3      	cmp	r3, r6
+	{
+		*(pulDest++) = *(pulSrc++);
+ 80000b6:	6025      	str	r5, [r4, #0]
+	//  
+	
+	// Copy the data segment initializers from flash to SRAM
+	pulSrc = &_sidata;
+
+	for(pulDest = &_sdata; pulDest < &_edata; )
+ 80000b8:	d007      	beq.n	80000ca <Hw_StartUp_Init+0x4a>
+ 80000ba:	1d1a      	adds	r2, r3, #4
+	{
+		*(pulDest++) = *(pulSrc++);
+ 80000bc:	581d      	ldr	r5, [r3, r0]
+ 80000be:	5884      	ldr	r4, [r0, r2]
+ 80000c0:	505d      	str	r5, [r3, r1]
+ 80000c2:	3308      	adds	r3, #8
+	//  
+	
+	// Copy the data segment initializers from flash to SRAM
+	pulSrc = &_sidata;
+
+	for(pulDest = &_sdata; pulDest < &_edata; )
+ 80000c4:	42b3      	cmp	r3, r6
+	{
+		*(pulDest++) = *(pulSrc++);
+ 80000c6:	508c      	str	r4, [r1, r2]
+	//  
+	
+	// Copy the data segment initializers from flash to SRAM
+	pulSrc = &_sidata;
+
+	for(pulDest = &_sdata; pulDest < &_edata; )
+ 80000c8:	d1f7      	bne.n	80000ba <Hw_StartUp_Init+0x3a>
+		*(pulDest++) = *(pulSrc++);
+	}
+  
+	/* Zero fill the bss segment.  This is done with inline assembly since this
+	   will clear the value of pulDest if it is not kept in a register. */
+	__asm("  ldr     r0, =_sbss\n"
+ 80000ca:	4820      	ldr	r0, [pc, #128]	; (800014c <zero_loop+0x7a>)
+ 80000cc:	4920      	ldr	r1, [pc, #128]	; (8000150 <zero_loop+0x7e>)
+ 80000ce:	f04f 0200 	mov.w	r2, #0
+
+080000d2 <zero_loop>:
+ 80000d2:	4288      	cmp	r0, r1
+ 80000d4:	bfb8      	it	lt
+ 80000d6:	f840 2b04 	strlt.w	r2, [r0], #4
+ 80000da:	f6ff affa 	blt.w	80000d2 <zero_loop>
+          "    blt     zero_loop");
+        	
+	
+	//-- FPU 활성화 
+	//
+	REG_SCB_CPACR |= ((3UL << 10*2)|(3UL << 11*2));  /* set CP10 and CP11 Full Access */	
+ 80000de:	f64e 5088 	movw	r0, #60808	; 0xed88
+ 80000e2:	f2ce 0000 	movt	r0, #57344	; 0xe000
+	
+
+	REG_RCC_CR 	 	|= (1<<0);			// Set HSION bit
+ 80000e6:	f44f 5360 	mov.w	r3, #14336	; 0x3800
+          "    blt     zero_loop");
+        	
+	
+	//-- FPU 활성화 
+	//
+	REG_SCB_CPACR |= ((3UL << 10*2)|(3UL << 11*2));  /* set CP10 and CP11 Full Access */	
+ 80000ea:	6801      	ldr	r1, [r0, #0]
+	
+
+	REG_RCC_CR 	 	|= (1<<0);			// Set HSION bit
+ 80000ec:	f2c4 0302 	movt	r3, #16386	; 0x4002
+          "    blt     zero_loop");
+        	
+	
+	//-- FPU 활성화 
+	//
+	REG_SCB_CPACR |= ((3UL << 10*2)|(3UL << 11*2));  /* set CP10 and CP11 Full Access */	
+ 80000f0:	f441 0270 	orr.w	r2, r1, #15728640	; 0xf00000
+ 80000f4:	6002      	str	r2, [r0, #0]
+	
+
+	REG_RCC_CR 	 	|= (1<<0);			// Set HSION bit
+ 80000f6:	681d      	ldr	r5, [r3, #0]
+	REG_RCC_CFGR  	 = 0x00000000;		// Reset CFGR register
+ 80000f8:	f643 0408 	movw	r4, #14344	; 0x3808
+	REG_RCC_PLLCFGR  = 0x24003010;		// Reset PLLCFGR register
+ 80000fc:	f643 0204 	movw	r2, #14340	; 0x3804
+	//
+	REG_SCB_CPACR |= ((3UL << 10*2)|(3UL << 11*2));  /* set CP10 and CP11 Full Access */	
+	
+
+	REG_RCC_CR 	 	|= (1<<0);			// Set HSION bit
+	REG_RCC_CFGR  	 = 0x00000000;		// Reset CFGR register
+ 8000100:	f2c4 0402 	movt	r4, #16386	; 0x4002
+	REG_RCC_PLLCFGR  = 0x24003010;		// Reset PLLCFGR register
+ 8000104:	f2c4 0202 	movt	r2, #16386	; 0x4002
+ 8000108:	f243 0010 	movw	r0, #12304	; 0x3010
+	//
+	REG_SCB_CPACR |= ((3UL << 10*2)|(3UL << 11*2));  /* set CP10 and CP11 Full Access */	
+	
+
+	REG_RCC_CR 	 	|= (1<<0);			// Set HSION bit
+	REG_RCC_CFGR  	 = 0x00000000;		// Reset CFGR register
+ 800010c:	2100      	movs	r1, #0
+	//-- FPU 활성화 
+	//
+	REG_SCB_CPACR |= ((3UL << 10*2)|(3UL << 11*2));  /* set CP10 and CP11 Full Access */	
+	
+
+	REG_RCC_CR 	 	|= (1<<0);			// Set HSION bit
+ 800010e:	f045 0501 	orr.w	r5, r5, #1
+	REG_RCC_CFGR  	 = 0x00000000;		// Reset CFGR register
+	REG_RCC_PLLCFGR  = 0x24003010;		// Reset PLLCFGR register
+ 8000112:	f2c2 4000 	movt	r0, #9216	; 0x2400
+	//-- FPU 활성화 
+	//
+	REG_SCB_CPACR |= ((3UL << 10*2)|(3UL << 11*2));  /* set CP10 and CP11 Full Access */	
+	
+
+	REG_RCC_CR 	 	|= (1<<0);			// Set HSION bit
+ 8000116:	601d      	str	r5, [r3, #0]
+	REG_RCC_CFGR  	 = 0x00000000;		// Reset CFGR register
+ 8000118:	6021      	str	r1, [r4, #0]
+	REG_RCC_PLLCFGR  = 0x24003010;		// Reset PLLCFGR register
+ 800011a:	6010      	str	r0, [r2, #0]
+	REG_RCC_CR  	&= 0xFFFBFFFF;		// Reset HSEBYP bit
+ 800011c:	6818      	ldr	r0, [r3, #0]
+	REG_RCC_CIR	  	 = 0x00000000;		// Disable all interrupts
+ 800011e:	f643 020c 	movw	r2, #14348	; 0x380c
+ 8000122:	f2c4 0202 	movt	r2, #16386	; 0x4002
+	
+
+	REG_RCC_CR 	 	|= (1<<0);			// Set HSION bit
+	REG_RCC_CFGR  	 = 0x00000000;		// Reset CFGR register
+	REG_RCC_PLLCFGR  = 0x24003010;		// Reset PLLCFGR register
+	REG_RCC_CR  	&= 0xFFFBFFFF;		// Reset HSEBYP bit
+ 8000126:	f420 2080 	bic.w	r0, r0, #262144	; 0x40000
+ 800012a:	6018      	str	r0, [r3, #0]
+	REG_RCC_CIR	  	 = 0x00000000;		// Disable all interrupts
+ 800012c:	6011      	str	r1, [r2, #0]
+
+
+    main();
+ 800012e:	4b06      	ldr	r3, [pc, #24]	; (8000148 <zero_loop+0x76>)
+ 8000130:	4798      	blx	r3
+}
+ 8000132:	e8bd 4079 	ldmia.w	sp!, {r0, r3, r4, r5, r6, lr}
+ 8000136:	4685      	mov	sp, r0
+ 8000138:	4770      	bx	lr
+ 800013a:	bf00      	nop
+ 800013c:	20000000 	.word	0x20000000
+ 8000140:	20000000 	.word	0x20000000
+ 8000144:	080007ec 	.word	0x080007ec
+ 8000148:	08000019 	.word	0x08000019
+ 800014c:	20000000 	.word	0x20000000
+ 8000150:	20000390 	.word	0x20000390
+
+08000154 <Hw_Init>:
+     WORK    : 
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Init( void )
+{
+ 8000154:	b508      	push	{r3, lr}
+	//-- PLL 설정
+	//
+	Hw_PLL_Init();
+ 8000156:	f240 13b9 	movw	r3, #441	; 0x1b9
+ 800015a:	f6c0 0300 	movt	r3, #2048	; 0x800
+ 800015e:	4798      	blx	r3
+	
+	
+	//-- 인터럽트 관련 초기화
+	//
+	Hw_ISR_Init();
+ 8000160:	f240 20d5 	movw	r0, #725	; 0x2d5
+ 8000164:	f6c0 0000 	movt	r0, #2048	; 0x800
+ 8000168:	4780      	blx	r0
+	
+		
+
+	//Hw_DMA_Init();
+	//Hw_Uart_Init();
+	Hw_Timer_Init();
+ 800016a:	f240 3115 	movw	r1, #789	; 0x315
+ 800016e:	f6c0 0100 	movt	r1, #2048	; 0x800
+ 8000172:	4788      	blx	r1
+	//Hw_VCom_Init();
+	Hw_Led_Init();	
+ 8000174:	f240 7211 	movw	r2, #1809	; 0x711
+ 8000178:	f6c0 0200 	movt	r2, #2048	; 0x800
+ 800017c:	4790      	blx	r2
+ 800017e:	bd08      	pop	{r3, pc}
+
+08000180 <Hw_Wait_ms>:
+     WORK    : 
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Wait_ms( u32 ms )
+{
+ 8000180:	b082      	sub	sp, #8
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Wait_Usec( u32 usec )
+{
+    Hw_Wait( usec * 1500 / 100 );
+ 8000182:	f24e 3260 	movw	r2, #58208	; 0xe360
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Wait( u32 delay )
+{
+    volatile u32 i;
+    for ( i = 0 ; i < delay ; i++ ){ };
+ 8000186:	2100      	movs	r1, #0
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Wait_Usec( u32 usec )
+{
+    Hw_Wait( usec * 1500 / 100 );
+ 8000188:	f2c0 0216 	movt	r2, #22
+ 800018c:	f248 531f 	movw	r3, #34079	; 0x851f
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Wait( u32 delay )
+{
+    volatile u32 i;
+    for ( i = 0 ; i < delay ; i++ ){ };
+ 8000190:	9101      	str	r1, [sp, #4]
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Wait_Usec( u32 usec )
+{
+    Hw_Wait( usec * 1500 / 100 );
+ 8000192:	fb02 f000 	mul.w	r0, r2, r0
+ 8000196:	f2c5 13eb 	movt	r3, #20971	; 0x51eb
+ 800019a:	fba3 1000 	umull	r1, r0, r3, r0
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Wait( u32 delay )
+{
+    volatile u32 i;
+    for ( i = 0 ; i < delay ; i++ ){ };
+ 800019e:	9b01      	ldr	r3, [sp, #4]
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Wait_Usec( u32 usec )
+{
+    Hw_Wait( usec * 1500 / 100 );
+ 80001a0:	0942      	lsrs	r2, r0, #5
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Wait( u32 delay )
+{
+    volatile u32 i;
+    for ( i = 0 ; i < delay ; i++ ){ };
+ 80001a2:	429a      	cmp	r2, r3
+ 80001a4:	d905      	bls.n	80001b2 <Hw_Wait_ms+0x32>
+ 80001a6:	9901      	ldr	r1, [sp, #4]
+ 80001a8:	1c48      	adds	r0, r1, #1
+ 80001aa:	9001      	str	r0, [sp, #4]
+ 80001ac:	9b01      	ldr	r3, [sp, #4]
+ 80001ae:	429a      	cmp	r2, r3
+ 80001b0:	d8f9      	bhi.n	80001a6 <Hw_Wait_ms+0x26>
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Wait_ms( u32 ms )
+{
+    Hw_Wait_Usec( ms*1000 );
+}
+ 80001b2:	b002      	add	sp, #8
+ 80001b4:	4770      	bx	lr
+ 80001b6:	bf00      	nop
+
+080001b8 <Hw_PLL_Init>:
+	u32 HSEStatus 	= 0;
+
+
+    //-- HSE 선택        
+    //
+	REG_RCC_CR |= (1<<16);	
+ 80001b8:	f44f 5260 	mov.w	r2, #14336	; 0x3800
+ 80001bc:	f2c4 0202 	movt	r2, #16386	; 0x4002
+     WORK    : 
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_PLL_Init( void )
+{
+ 80001c0:	b410      	push	{r4}
+	u32 HSEStatus 	= 0;
+
+
+    //-- HSE 선택        
+    //
+	REG_RCC_CR |= (1<<16);	
+ 80001c2:	6811      	ldr	r1, [r2, #0]
+ 80001c4:	f441 3080 	orr.w	r0, r1, #65536	; 0x10000
+ 80001c8:	f44f 63a0 	mov.w	r3, #1280	; 0x500
+ 80001cc:	6010      	str	r0, [r2, #0]
+ 80001ce:	e004      	b.n	80001da <Hw_PLL_Init+0x22>
+
+	//-- 설정된 clock 이 설정 되었는지 확인
+	//
+	do
+	{	
+		HSEStatus = REG_RCC_CR & (1<<17);	// HSE 인경우
+ 80001d0:	6811      	ldr	r1, [r2, #0]
+		TimeOutCnt++;		
+	} while( (HSEStatus == 0) && (TimeOutCnt < 1280) );
+ 80001d2:	038c      	lsls	r4, r1, #14
+ 80001d4:	d407      	bmi.n	80001e6 <Hw_PLL_Init+0x2e>
+ 80001d6:	3b01      	subs	r3, #1
+ 80001d8:	d005      	beq.n	80001e6 <Hw_PLL_Init+0x2e>
+
+	//-- 설정된 clock 이 설정 되었는지 확인
+	//
+	do
+	{	
+		HSEStatus = REG_RCC_CR & (1<<17);	// HSE 인경우
+ 80001da:	6814      	ldr	r4, [r2, #0]
+		TimeOutCnt++;		
+	} while( (HSEStatus == 0) && (TimeOutCnt < 1280) );
+ 80001dc:	f414 3f00 	tst.w	r4, #131072	; 0x20000
+ 80001e0:	f103 33ff 	add.w	r3, r3, #4294967295	; 0xffffffff
+ 80001e4:	d0f4      	beq.n	80001d0 <Hw_PLL_Init+0x18>
+
+
+	if( (REG_RCC_CR & (1<<17)) != 0 )
+ 80001e6:	f44f 5260 	mov.w	r2, #14336	; 0x3800
+	//
+	//   f(VCO clock) = 8Mhz x (360 / 8) = 8 x 45   = 360Mhz
+	//   f(PLL )      = 360Mhz / 2                  = 180Mhz
+	//   f(USB OTG FS, SDIO, RNG clock output)      = 51Mhz
+	// 
+    REG_RCC_PLLCFGR = PLL_M | (PLL_N << 6) | (((PLL_P >> 1) -1) << 16) | (1<<22) | (PLL_Q << 24);
+ 80001ea:	f643 0104 	movw	r1, #14340	; 0x3804
+		HSEStatus = REG_RCC_CR & (1<<17);	// HSE 인경우
+		TimeOutCnt++;		
+	} while( (HSEStatus == 0) && (TimeOutCnt < 1280) );
+
+
+	if( (REG_RCC_CR & (1<<17)) != 0 )
+ 80001ee:	f2c4 0202 	movt	r2, #16386	; 0x4002
+	//
+	//   f(VCO clock) = 8Mhz x (360 / 8) = 8 x 45   = 360Mhz
+	//   f(PLL )      = 360Mhz / 2                  = 180Mhz
+	//   f(USB OTG FS, SDIO, RNG clock output)      = 51Mhz
+	// 
+    REG_RCC_PLLCFGR = PLL_M | (PLL_N << 6) | (((PLL_P >> 1) -1) << 16) | (1<<22) | (PLL_Q << 24);
+ 80001f2:	f2c4 0102 	movt	r1, #16386	; 0x4002
+ 80001f6:	f645 2008 	movw	r0, #23048	; 0x5a08
+
+
+    REG_RCC_APB1ENR |= (1<<28);		// PWREN
+ 80001fa:	f44f 5361 	mov.w	r3, #14400	; 0x3840
+ 80001fe:	f2c4 0302 	movt	r3, #16386	; 0x4002
+	//
+	//   f(VCO clock) = 8Mhz x (360 / 8) = 8 x 45   = 360Mhz
+	//   f(PLL )      = 360Mhz / 2                  = 180Mhz
+	//   f(USB OTG FS, SDIO, RNG clock output)      = 51Mhz
+	// 
+    REG_RCC_PLLCFGR = PLL_M | (PLL_N << 6) | (((PLL_P >> 1) -1) << 16) | (1<<22) | (PLL_Q << 24);
+ 8000202:	f2c0 7040 	movt	r0, #1856	; 0x740
+		HSEStatus = REG_RCC_CR & (1<<17);	// HSE 인경우
+		TimeOutCnt++;		
+	} while( (HSEStatus == 0) && (TimeOutCnt < 1280) );
+
+
+	if( (REG_RCC_CR & (1<<17)) != 0 )
+ 8000206:	6814      	ldr	r4, [r2, #0]
+	//
+	//   f(VCO clock) = 8Mhz x (360 / 8) = 8 x 45   = 360Mhz
+	//   f(PLL )      = 360Mhz / 2                  = 180Mhz
+	//   f(USB OTG FS, SDIO, RNG clock output)      = 51Mhz
+	// 
+    REG_RCC_PLLCFGR = PLL_M | (PLL_N << 6) | (((PLL_P >> 1) -1) << 16) | (1<<22) | (PLL_Q << 24);
+ 8000208:	6008      	str	r0, [r1, #0]
+
+
+    REG_RCC_APB1ENR |= (1<<28);		// PWREN
+ 800020a:	6818      	ldr	r0, [r3, #0]
+    REG_PWR_CR 		|= (3<<14);		// VOS = Scale 1 mode    
+ 800020c:	f44f 41e0 	mov.w	r1, #28672	; 0x7000
+ 8000210:	f2c4 0100 	movt	r1, #16384	; 0x4000
+	//   f(USB OTG FS, SDIO, RNG clock output)      = 51Mhz
+	// 
+    REG_RCC_PLLCFGR = PLL_M | (PLL_N << 6) | (((PLL_P >> 1) -1) << 16) | (1<<22) | (PLL_Q << 24);
+
+
+    REG_RCC_APB1ENR |= (1<<28);		// PWREN
+ 8000214:	f040 5080 	orr.w	r0, r0, #268435456	; 0x10000000
+ 8000218:	6018      	str	r0, [r3, #0]
+    REG_PWR_CR 		|= (3<<14);		// VOS = Scale 1 mode    
+ 800021a:	6808      	ldr	r0, [r1, #0]
+
+   
+
+ 	//-- HCLK = 180Mhz
+ 	//
+	REG_RCC_CFGR |= (1<<4);		// HPRE = DIV1 = 180Mhz
+ 800021c:	f643 0308 	movw	r3, #14344	; 0x3808
+ 8000220:	f2c4 0302 	movt	r3, #16386	; 0x4002
+	// 
+    REG_RCC_PLLCFGR = PLL_M | (PLL_N << 6) | (((PLL_P >> 1) -1) << 16) | (1<<22) | (PLL_Q << 24);
+
+
+    REG_RCC_APB1ENR |= (1<<28);		// PWREN
+    REG_PWR_CR 		|= (3<<14);		// VOS = Scale 1 mode    
+ 8000224:	f440 4040 	orr.w	r0, r0, #49152	; 0xc000
+ 8000228:	6008      	str	r0, [r1, #0]
+
+   
+
+ 	//-- HCLK = 180Mhz
+ 	//
+	REG_RCC_CFGR |= (1<<4);		// HPRE = DIV1 = 180Mhz
+ 800022a:	6819      	ldr	r1, [r3, #0]
+ 800022c:	f041 0010 	orr.w	r0, r1, #16
+ 8000230:	6018      	str	r0, [r3, #0]
+      
+    //-- PCLK2 = HCLK / 2 = 90Mhz
+    //
+    REG_RCC_CFGR |= (4<<13);	// PPRE2 = DIV2 = 90Mhz;
+ 8000232:	6819      	ldr	r1, [r3, #0]
+ 8000234:	f441 4000 	orr.w	r0, r1, #32768	; 0x8000
+ 8000238:	6018      	str	r0, [r3, #0]
+    
+	//-- PCLK1 = HCLK / 4 = 45Mhz
+	//
+	REG_RCC_CFGR |= (5<<10);	// PPRE1 = DIV4 = 45Mhz;
+ 800023a:	6819      	ldr	r1, [r3, #0]
+ 800023c:	f441 50a0 	orr.w	r0, r1, #5120	; 0x1400
+ 8000240:	6018      	str	r0, [r3, #0]
+
+ 	//-- Enable the main PLL
+    //
+    REG_RCC_CR 	 |= (1<<24);	// PLLON
+ 8000242:	6813      	ldr	r3, [r2, #0]
+ 8000244:	f043 7180 	orr.w	r1, r3, #16777216	; 0x1000000
+ 8000248:	6011      	str	r1, [r2, #0]
+
+
+	//-- Wait till the main PLL is ready
+	//
+    while((REG_RCC_CR & (1<<25)) == 0)		// wait for PLLRDY = 1
+ 800024a:	6810      	ldr	r0, [r2, #0]
+ 800024c:	0180      	lsls	r0, r0, #6
+ 800024e:	d5fc      	bpl.n	800024a <Hw_PLL_Init+0x92>
+    {
+    }
+
+	//-- Enable the Over-drive to extend the clock frequency to 180 Mhz */
+	//
+	REG_PWR_CR |= (1<<16);					// PWR_CR_ODEN;
+ 8000250:	f44f 43e0 	mov.w	r3, #28672	; 0x7000
+ 8000254:	f2c4 0300 	movt	r3, #16384	; 0x4000
+    while((REG_PWR_CSR & (1<<16)) == 0)		// PWR_CSR_ODRDY
+ 8000258:	f247 0204 	movw	r2, #28676	; 0x7004
+    {
+    }
+
+	//-- Enable the Over-drive to extend the clock frequency to 180 Mhz */
+	//
+	REG_PWR_CR |= (1<<16);					// PWR_CR_ODEN;
+ 800025c:	6819      	ldr	r1, [r3, #0]
+ 800025e:	f441 3080 	orr.w	r0, r1, #65536	; 0x10000
+ 8000262:	6018      	str	r0, [r3, #0]
+    while((REG_PWR_CSR & (1<<16)) == 0)		// PWR_CSR_ODRDY
+ 8000264:	f2c4 0200 	movt	r2, #16384	; 0x4000
+ 8000268:	6813      	ldr	r3, [r2, #0]
+ 800026a:	03d9      	lsls	r1, r3, #15
+ 800026c:	d5fc      	bpl.n	8000268 <Hw_PLL_Init+0xb0>
+    {
+    }
+
+	REG_PWR_CR |= (1<<17);					// PWR_CR_ODSWEN;
+ 800026e:	f44f 40e0 	mov.w	r0, #28672	; 0x7000
+ 8000272:	f2c4 0000 	movt	r0, #16384	; 0x4000
+    while((REG_PWR_CSR & (1<<17)) == 0)		// PWR_CSR_ODSWRDY
+ 8000276:	f247 0204 	movw	r2, #28676	; 0x7004
+	REG_PWR_CR |= (1<<16);					// PWR_CR_ODEN;
+    while((REG_PWR_CSR & (1<<16)) == 0)		// PWR_CSR_ODRDY
+    {
+    }
+
+	REG_PWR_CR |= (1<<17);					// PWR_CR_ODSWEN;
+ 800027a:	6801      	ldr	r1, [r0, #0]
+ 800027c:	f441 3300 	orr.w	r3, r1, #131072	; 0x20000
+ 8000280:	6003      	str	r3, [r0, #0]
+    while((REG_PWR_CSR & (1<<17)) == 0)		// PWR_CSR_ODSWRDY
+ 8000282:	f2c4 0200 	movt	r2, #16384	; 0x4000
+ 8000286:	6810      	ldr	r0, [r2, #0]
+ 8000288:	0383      	lsls	r3, r0, #14
+ 800028a:	d5fc      	bpl.n	8000286 <Hw_PLL_Init+0xce>
+    } 
+     
+
+	//-- Configure Flash prefetch, Instruction cache, Data cache and wait state 
+	//
+    REG_FLASH_ACR = 0 	|
+ 800028c:	f44f 5370 	mov.w	r3, #15360	; 0x3c00
+ 8000290:	f2c4 0302 	movt	r3, #16386	; 0x4002
+    		( 5 <<  0 );	// FLASH_ACR_LATENCY_5WS
+
+
+	//-- Select the main PLL as system clock source
+    //
+	REG_RCC_CFGR &= ~(3<<0);	// RCC_CFGR_SW;
+ 8000294:	f643 0208 	movw	r2, #14344	; 0x3808
+ 8000298:	f2c4 0202 	movt	r2, #16386	; 0x4002
+    } 
+     
+
+	//-- Configure Flash prefetch, Instruction cache, Data cache and wait state 
+	//
+    REG_FLASH_ACR = 0 	|
+ 800029c:	f244 6105 	movw	r1, #17925	; 0x4605
+ 80002a0:	6019      	str	r1, [r3, #0]
+    		( 5 <<  0 );	// FLASH_ACR_LATENCY_5WS
+
+
+	//-- Select the main PLL as system clock source
+    //
+	REG_RCC_CFGR &= ~(3<<0);	// RCC_CFGR_SW;
+ 80002a2:	6810      	ldr	r0, [r2, #0]
+ 80002a4:	f020 0303 	bic.w	r3, r0, #3
+ 80002a8:	6013      	str	r3, [r2, #0]
+    REG_RCC_CFGR |=  (2<<0);	// RCC_CFGR_SW_PLL;
+ 80002aa:	6811      	ldr	r1, [r2, #0]
+ 80002ac:	f041 0002 	orr.w	r0, r1, #2
+ 80002b0:	6010      	str	r0, [r2, #0]
+
+	//-- Wait till the main PLL is used as system clock source 
+	//
+    while ((REG_RCC_CFGR & (3<<0) ) != 0x02);
+ 80002b2:	6813      	ldr	r3, [r2, #0]
+ 80002b4:	f003 0103 	and.w	r1, r3, #3
+ 80002b8:	2902      	cmp	r1, #2
+ 80002ba:	d1fa      	bne.n	80002b2 <Hw_PLL_Init+0xfa>
+
+
+    
+    //-- AHB1에 주변장치에 Clock 소스 동작제어
+    //
+	REG_RCC_AHB1ENR |=  0  	|
+ 80002bc:	f643 0030 	movw	r0, #14384	; 0x3830
+ 80002c0:	f2c4 0002 	movt	r0, #16386	; 0x4002
+ 80002c4:	6802      	ldr	r2, [r0, #0]
+ 80002c6:	ea6f 23d2 	mvn.w	r3, r2, lsr #11
+ 80002ca:	ea6f 21c3 	mvn.w	r1, r3, lsl #11
+ 80002ce:	6001      	str	r1, [r0, #0]
+				( 1 <<  7 ) |	// GPIO_H Enable
+				( 1 <<  8 ) |	// GPIO_I Enable
+				( 1 <<  9 ) |	// GPIO_J Enable
+				( 1 << 10 );	// GPIO_K Enable
+
+ 80002d0:	bc10      	pop	{r4}
+ 80002d2:	4770      	bx	lr
+
+080002d4 <Hw_ISR_Init>:
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_ISR_Init( void )
+{
+	REG_SCB_VTOR = (u32)Hw_ISR_VectorTable;
+ 80002d4:	f64e 5208 	movw	r2, #60680	; 0xed08
+ 80002d8:	f240 2300 	movw	r3, #512	; 0x200
+ 80002dc:	f2ce 0200 	movt	r2, #57344	; 0xe000
+ 80002e0:	f2c2 0300 	movt	r3, #8192	; 0x2000
+ 80002e4:	6013      	str	r3, [r2, #0]
+ 80002e6:	4770      	bx	lr
+
+080002e8 <Hw_ISR_SetIRQFuncByAddr>:
+---------------------------------------------------------------------------*/
+void Hw_ISR_SetIRQFuncByAddr( u32 ISR_Addr, u32 FuncAddress, u8 ISR_Priority )
+{	
+	u32 ISR_StartOffset = ISR_Addr/4;
+	
+	Hw_ISR_VectorTable[ ISR_StartOffset ] = FuncAddress;	
+ 80002e8:	f240 2300 	movw	r3, #512	; 0x200
+     			u8  ISR_Priority : 인터럽트 우선순위(작은값이 우선순위 높음)
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_ISR_SetIRQFuncByAddr( u32 ISR_Addr, u32 FuncAddress, u8 ISR_Priority )
+{	
+	u32 ISR_StartOffset = ISR_Addr/4;
+ 80002ec:	0880      	lsrs	r0, r0, #2
+	
+	Hw_ISR_VectorTable[ ISR_StartOffset ] = FuncAddress;	
+ 80002ee:	f2c2 0300 	movt	r3, #8192	; 0x2000
+ 80002f2:	f843 1020 	str.w	r1, [r3, r0, lsl #2]
+ 80002f6:	4770      	bx	lr
+
+080002f8 <Hw_Timer_SetupISR>:
+     	 	 	 타이머 H/W 기능을 초기화 한다.
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Timer_SetupISR( void )
+{	
+ 80002f8:	b508      	push	{r3, lr}
+	Hw_ISR_SetIRQFuncByAddr( 0x003C, (u32)Hw_Timer_ISR, 0 );	
+ 80002fa:	f240 6175 	movw	r1, #1653	; 0x675
+ 80002fe:	f240 23e9 	movw	r3, #745	; 0x2e9
+ 8000302:	203c      	movs	r0, #60	; 0x3c
+ 8000304:	f6c0 0100 	movt	r1, #2048	; 0x800
+ 8000308:	2200      	movs	r2, #0
+ 800030a:	f6c0 0300 	movt	r3, #2048	; 0x800
+ 800030e:	4798      	blx	r3
+ 8000310:	bd08      	pop	{r3, pc}
+ 8000312:	bf00      	nop
+
+08000314 <Hw_Timer_Init>:
+     WORK    :
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Timer_Init( void )
+{
+ 8000314:	b538      	push	{r3, r4, r5, lr}
+	u8 i;
+	static u8 Excute = 0;
+
+	
+	if( Excute == 1 ) return;  // 이미 한번 실행했다면 정지.
+ 8000316:	4d33      	ldr	r5, [pc, #204]	; (80003e4 <Hw_Timer_Init+0xd0>)
+ 8000318:	782b      	ldrb	r3, [r5, #0]
+ 800031a:	2b01      	cmp	r3, #1
+ 800031c:	d061      	beq.n	80003e2 <Hw_Timer_Init+0xce>
+	
+	
+	// 구조체 초기화
+	for(i=0; i<TIMER_MAX; i++)
+	{
+		Timer_Tbl[i].Timer_En   = OFF;
+ 800031e:	4832      	ldr	r0, [pc, #200]	; (80003e8 <Hw_Timer_Init+0xd4>)
+		Timer_Tbl[i].Timer_Init = 0;
+		Timer_Tbl[i].TmrFnct    = NULL;
+	}	                   
+	
+	
+	Hw_Timer_SetupISR();
+ 8000320:	4932      	ldr	r1, [pc, #200]	; (80003ec <Hw_Timer_Init+0xd8>)
+	
+	
+	// 구조체 초기화
+	for(i=0; i<TIMER_MAX; i++)
+	{
+		Timer_Tbl[i].Timer_En   = OFF;
+ 8000322:	2400      	movs	r4, #0
+ 8000324:	7004      	strb	r4, [r0, #0]
+		Timer_Tbl[i].Timer_Ctn  = 0;
+ 8000326:	8044      	strh	r4, [r0, #2]
+		Timer_Tbl[i].Timer_Init = 0;
+ 8000328:	8084      	strh	r4, [r0, #4]
+		Timer_Tbl[i].TmrFnct    = NULL;
+ 800032a:	6084      	str	r4, [r0, #8]
+	
+	
+	// 구조체 초기화
+	for(i=0; i<TIMER_MAX; i++)
+	{
+		Timer_Tbl[i].Timer_En   = OFF;
+ 800032c:	7404      	strb	r4, [r0, #16]
+		Timer_Tbl[i].Timer_Ctn  = 0;
+ 800032e:	8244      	strh	r4, [r0, #18]
+		Timer_Tbl[i].Timer_Init = 0;
+ 8000330:	8284      	strh	r4, [r0, #20]
+		Timer_Tbl[i].TmrFnct    = NULL;
+ 8000332:	6184      	str	r4, [r0, #24]
+	
+	
+	// 구조체 초기화
+	for(i=0; i<TIMER_MAX; i++)
+	{
+		Timer_Tbl[i].Timer_En   = OFF;
+ 8000334:	f880 4020 	strb.w	r4, [r0, #32]
+		Timer_Tbl[i].Timer_Ctn  = 0;
+ 8000338:	8444      	strh	r4, [r0, #34]	; 0x22
+		Timer_Tbl[i].Timer_Init = 0;
+ 800033a:	8484      	strh	r4, [r0, #36]	; 0x24
+		Timer_Tbl[i].TmrFnct    = NULL;
+ 800033c:	6284      	str	r4, [r0, #40]	; 0x28
+	
+	
+	// 구조체 초기화
+	for(i=0; i<TIMER_MAX; i++)
+	{
+		Timer_Tbl[i].Timer_En   = OFF;
+ 800033e:	f880 4030 	strb.w	r4, [r0, #48]	; 0x30
+		Timer_Tbl[i].Timer_Ctn  = 0;
+ 8000342:	8644      	strh	r4, [r0, #50]	; 0x32
+		Timer_Tbl[i].Timer_Init = 0;
+ 8000344:	8684      	strh	r4, [r0, #52]	; 0x34
+		Timer_Tbl[i].TmrFnct    = NULL;
+ 8000346:	6384      	str	r4, [r0, #56]	; 0x38
+	
+	
+	// 구조체 초기화
+	for(i=0; i<TIMER_MAX; i++)
+	{
+		Timer_Tbl[i].Timer_En   = OFF;
+ 8000348:	f880 4040 	strb.w	r4, [r0, #64]	; 0x40
+		Timer_Tbl[i].Timer_Ctn  = 0;
+ 800034c:	f8a0 4042 	strh.w	r4, [r0, #66]	; 0x42
+		Timer_Tbl[i].Timer_Init = 0;
+ 8000350:	f8a0 4044 	strh.w	r4, [r0, #68]	; 0x44
+		Timer_Tbl[i].TmrFnct    = NULL;
+ 8000354:	6484      	str	r4, [r0, #72]	; 0x48
+	
+	
+	// 구조체 초기화
+	for(i=0; i<TIMER_MAX; i++)
+	{
+		Timer_Tbl[i].Timer_En   = OFF;
+ 8000356:	f880 4050 	strb.w	r4, [r0, #80]	; 0x50
+		Timer_Tbl[i].Timer_Ctn  = 0;
+ 800035a:	f8a0 4052 	strh.w	r4, [r0, #82]	; 0x52
+		Timer_Tbl[i].Timer_Init = 0;
+ 800035e:	f8a0 4054 	strh.w	r4, [r0, #84]	; 0x54
+		Timer_Tbl[i].TmrFnct    = NULL;
+ 8000362:	6584      	str	r4, [r0, #88]	; 0x58
+	
+	
+	// 구조체 초기화
+	for(i=0; i<TIMER_MAX; i++)
+	{
+		Timer_Tbl[i].Timer_En   = OFF;
+ 8000364:	f880 4060 	strb.w	r4, [r0, #96]	; 0x60
+		Timer_Tbl[i].Timer_Ctn  = 0;
+ 8000368:	f8a0 4062 	strh.w	r4, [r0, #98]	; 0x62
+		Timer_Tbl[i].Timer_Init = 0;
+ 800036c:	f8a0 4064 	strh.w	r4, [r0, #100]	; 0x64
+		Timer_Tbl[i].TmrFnct    = NULL;
+ 8000370:	6684      	str	r4, [r0, #104]	; 0x68
+	
+	
+	// 구조체 초기화
+	for(i=0; i<TIMER_MAX; i++)
+	{
+		Timer_Tbl[i].Timer_En   = OFF;
+ 8000372:	f880 4070 	strb.w	r4, [r0, #112]	; 0x70
+		Timer_Tbl[i].Timer_Ctn  = 0;
+ 8000376:	f8a0 4072 	strh.w	r4, [r0, #114]	; 0x72
+		Timer_Tbl[i].Timer_Init = 0;
+ 800037a:	f8a0 4074 	strh.w	r4, [r0, #116]	; 0x74
+		Timer_Tbl[i].TmrFnct    = NULL;
+ 800037e:	6784      	str	r4, [r0, #120]	; 0x78
+	
+	
+	// 구조체 초기화
+	for(i=0; i<TIMER_MAX; i++)
+	{
+		Timer_Tbl[i].Timer_En   = OFF;
+ 8000380:	f880 4080 	strb.w	r4, [r0, #128]	; 0x80
+		Timer_Tbl[i].Timer_Ctn  = 0;
+ 8000384:	f8a0 4082 	strh.w	r4, [r0, #130]	; 0x82
+		Timer_Tbl[i].Timer_Init = 0;
+ 8000388:	f8a0 4084 	strh.w	r4, [r0, #132]	; 0x84
+		Timer_Tbl[i].TmrFnct    = NULL;
+ 800038c:	f8c0 4088 	str.w	r4, [r0, #136]	; 0x88
+	
+	
+	// 구조체 초기화
+	for(i=0; i<TIMER_MAX; i++)
+	{
+		Timer_Tbl[i].Timer_En   = OFF;
+ 8000390:	f880 4090 	strb.w	r4, [r0, #144]	; 0x90
+		Timer_Tbl[i].Timer_Ctn  = 0;
+ 8000394:	f8a0 4092 	strh.w	r4, [r0, #146]	; 0x92
+		Timer_Tbl[i].Timer_Init = 0;
+ 8000398:	f8a0 4094 	strh.w	r4, [r0, #148]	; 0x94
+		Timer_Tbl[i].TmrFnct    = NULL;
+ 800039c:	f8c0 4098 	str.w	r4, [r0, #152]	; 0x98
+	}	                   
+	
+	
+	Hw_Timer_SetupISR();
+ 80003a0:	4788      	blx	r1
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Timer_Setup( void )
+{
+
+	REG_STK_LOAD = 180000 - 1;	// 180,000,000 / 180,000 = 1000us = 1ms
+ 80003a2:	f24e 0114 	movw	r1, #57364	; 0xe014
+	
+	REG_STK_VAL  = 0;	
+ 80003a6:	f24e 0218 	movw	r2, #57368	; 0xe018
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Timer_Setup( void )
+{
+
+	REG_STK_LOAD = 180000 - 1;	// 180,000,000 / 180,000 = 1000us = 1ms
+ 80003aa:	f2ce 0100 	movt	r1, #57344	; 0xe000
+	
+	REG_STK_VAL  = 0;	
+ 80003ae:	f2ce 0200 	movt	r2, #57344	; 0xe000
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Timer_Setup( void )
+{
+
+	REG_STK_LOAD = 180000 - 1;	// 180,000,000 / 180,000 = 1000us = 1ms
+ 80003b2:	f64b 701f 	movw	r0, #48927	; 0xbf1f
+	
+	REG_STK_VAL  = 0;	
+	
+	SET_BIT( REG_STK_CTRL, 2 );	// CLKSOURCE = Processor Clock 180Mhz		
+ 80003b6:	f24e 0310 	movw	r3, #57360	; 0xe010
+ 80003ba:	f2ce 0300 	movt	r3, #57344	; 0xe000
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Timer_Setup( void )
+{
+
+	REG_STK_LOAD = 180000 - 1;	// 180,000,000 / 180,000 = 1000us = 1ms
+ 80003be:	f2c0 0002 	movt	r0, #2
+ 80003c2:	6008      	str	r0, [r1, #0]
+	
+	REG_STK_VAL  = 0;	
+ 80003c4:	6014      	str	r4, [r2, #0]
+	
+	SET_BIT( REG_STK_CTRL, 2 );	// CLKSOURCE = Processor Clock 180Mhz		
+ 80003c6:	6819      	ldr	r1, [r3, #0]
+ 80003c8:	f041 0204 	orr.w	r2, r1, #4
+ 80003cc:	601a      	str	r2, [r3, #0]
+	SET_BIT( REG_STK_CTRL, 1 );	// 인터럽트 활성화		
+ 80003ce:	6818      	ldr	r0, [r3, #0]
+ 80003d0:	f040 0102 	orr.w	r1, r0, #2
+ 80003d4:	6019      	str	r1, [r3, #0]
+	SET_BIT( REG_STK_CTRL, 0 );	// Counter Enable
+ 80003d6:	681a      	ldr	r2, [r3, #0]
+ 80003d8:	f042 0001 	orr.w	r0, r2, #1
+ 80003dc:	6018      	str	r0, [r3, #0]
+	
+	
+	Hw_Timer_SetupISR();
+	Hw_Timer_Setup();	
+
+	Excute = 1;
+ 80003de:	2301      	movs	r3, #1
+ 80003e0:	702b      	strb	r3, [r5, #0]
+ 80003e2:	bd38      	pop	{r3, r4, r5, pc}
+ 80003e4:	200000a0 	.word	0x200000a0
+ 80003e8:	20000000 	.word	0x20000000
+ 80003ec:	080002f9 	.word	0x080002f9
+
+080003f0 <Hw_Timer_Tick>:
+void Hw_Timer_Tick(void)
+{
+	u8 i;
+
+	
+	Hw_Timer_Counter++;
+ 80003f0:	4a9d      	ldr	r2, [pc, #628]	; (8000668 <Hw_Timer_Tick+0x278>)
+
+
+	if( Tmr_Ctn ) Tmr_Ctn--;
+ 80003f2:	4b9e      	ldr	r3, [pc, #632]	; (800066c <Hw_Timer_Tick+0x27c>)
+void Hw_Timer_Tick(void)
+{
+	u8 i;
+
+	
+	Hw_Timer_Counter++;
+ 80003f4:	6811      	ldr	r1, [r2, #0]
+ 80003f6:	1c48      	adds	r0, r1, #1
+			타이머인터럽트 발생시에 실행되는 함수(1ms 혹은 10ms 단위로 실행)
+     ARG	: void
+     RET	: void
+---------------------------------------------------------------------------*/
+void Hw_Timer_Tick(void)
+{
+ 80003f8:	b510      	push	{r4, lr}
+	u8 i;
+
+	
+	Hw_Timer_Counter++;
+ 80003fa:	6010      	str	r0, [r2, #0]
+
+
+	if( Tmr_Ctn ) Tmr_Ctn--;
+ 80003fc:	881c      	ldrh	r4, [r3, #0]
+ 80003fe:	b2a2      	uxth	r2, r4
+ 8000400:	b11a      	cbz	r2, 800040a <Hw_Timer_Tick+0x1a>
+ 8000402:	8819      	ldrh	r1, [r3, #0]
+ 8000404:	1e48      	subs	r0, r1, #1
+ 8000406:	b284      	uxth	r4, r0
+ 8000408:	801c      	strh	r4, [r3, #0]
+	
+	
+			   
+	for(i=0; i<TIMER_MAX; i++)								// 타이머 갯수만큼
+	{
+		if( Timer_Tbl[i].Timer_En == ON)   					// 타이머가 활성화 됬니?
+ 800040a:	4c99      	ldr	r4, [pc, #612]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 800040c:	7823      	ldrb	r3, [r4, #0]
+ 800040e:	2b01      	cmp	r3, #1
+ 8000410:	d030      	beq.n	8000474 <Hw_Timer_Tick+0x84>
+ 8000412:	7c20      	ldrb	r0, [r4, #16]
+ 8000414:	4a96      	ldr	r2, [pc, #600]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 8000416:	2801      	cmp	r0, #1
+ 8000418:	d03e      	beq.n	8000498 <Hw_Timer_Tick+0xa8>
+ 800041a:	f894 0020 	ldrb.w	r0, [r4, #32]
+ 800041e:	4a94      	ldr	r2, [pc, #592]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 8000420:	2801      	cmp	r0, #1
+ 8000422:	d04c      	beq.n	80004be <Hw_Timer_Tick+0xce>
+ 8000424:	f894 0030 	ldrb.w	r0, [r4, #48]	; 0x30
+ 8000428:	4a91      	ldr	r2, [pc, #580]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 800042a:	2801      	cmp	r0, #1
+ 800042c:	d05b      	beq.n	80004e6 <Hw_Timer_Tick+0xf6>
+ 800042e:	f894 0040 	ldrb.w	r0, [r4, #64]	; 0x40
+ 8000432:	4a8f      	ldr	r2, [pc, #572]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 8000434:	2801      	cmp	r0, #1
+ 8000436:	d06a      	beq.n	800050e <Hw_Timer_Tick+0x11e>
+ 8000438:	f894 0050 	ldrb.w	r0, [r4, #80]	; 0x50
+ 800043c:	4a8c      	ldr	r2, [pc, #560]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 800043e:	2801      	cmp	r0, #1
+ 8000440:	d07d      	beq.n	800053e <Hw_Timer_Tick+0x14e>
+ 8000442:	f894 0060 	ldrb.w	r0, [r4, #96]	; 0x60
+ 8000446:	4a8a      	ldr	r2, [pc, #552]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 8000448:	2801      	cmp	r0, #1
+ 800044a:	f000 8091 	beq.w	8000570 <Hw_Timer_Tick+0x180>
+ 800044e:	f894 0070 	ldrb.w	r0, [r4, #112]	; 0x70
+ 8000452:	4a87      	ldr	r2, [pc, #540]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 8000454:	2801      	cmp	r0, #1
+ 8000456:	f000 80a4 	beq.w	80005a2 <Hw_Timer_Tick+0x1b2>
+ 800045a:	f894 0080 	ldrb.w	r0, [r4, #128]	; 0x80
+ 800045e:	4a84      	ldr	r2, [pc, #528]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 8000460:	2801      	cmp	r0, #1
+ 8000462:	f000 80b7 	beq.w	80005d4 <Hw_Timer_Tick+0x1e4>
+ 8000466:	f894 0090 	ldrb.w	r0, [r4, #144]	; 0x90
+ 800046a:	4a81      	ldr	r2, [pc, #516]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 800046c:	2801      	cmp	r0, #1
+ 800046e:	f000 80cb 	beq.w	8000608 <Hw_Timer_Tick+0x218>
+ 8000472:	bd10      	pop	{r4, pc}
+		{
+			Timer_Tbl[i].Timer_Ctn--;  						// 타이머값 감소
+ 8000474:	8862      	ldrh	r2, [r4, #2]
+ 8000476:	1e51      	subs	r1, r2, #1
+ 8000478:	b288      	uxth	r0, r1
+ 800047a:	8060      	strh	r0, [r4, #2]
+
+			if(Timer_Tbl[i].Timer_Ctn == 0) 				// 타이머 오버플로어
+ 800047c:	2800      	cmp	r0, #0
+ 800047e:	d1c8      	bne.n	8000412 <Hw_Timer_Tick+0x22>
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+ 8000480:	7863      	ldrb	r3, [r4, #1]
+ 8000482:	2b01      	cmp	r3, #1
+ 8000484:	f000 80d9 	beq.w	800063a <Hw_Timer_Tick+0x24a>
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 8000488:	88a2      	ldrh	r2, [r4, #4]
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 800048a:	68a1      	ldr	r1, [r4, #8]
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 800048c:	8062      	strh	r2, [r4, #2]
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 800048e:	4788      	blx	r1
+	
+	
+			   
+	for(i=0; i<TIMER_MAX; i++)								// 타이머 갯수만큼
+	{
+		if( Timer_Tbl[i].Timer_En == ON)   					// 타이머가 활성화 됬니?
+ 8000490:	7c20      	ldrb	r0, [r4, #16]
+ 8000492:	4a77      	ldr	r2, [pc, #476]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 8000494:	2801      	cmp	r0, #1
+ 8000496:	d1c0      	bne.n	800041a <Hw_Timer_Tick+0x2a>
+		{
+			Timer_Tbl[i].Timer_Ctn--;  						// 타이머값 감소
+ 8000498:	8a53      	ldrh	r3, [r2, #18]
+ 800049a:	1e59      	subs	r1, r3, #1
+ 800049c:	b288      	uxth	r0, r1
+ 800049e:	8250      	strh	r0, [r2, #18]
+
+			if(Timer_Tbl[i].Timer_Ctn == 0) 				// 타이머 오버플로어
+ 80004a0:	2800      	cmp	r0, #0
+ 80004a2:	d1ba      	bne.n	800041a <Hw_Timer_Tick+0x2a>
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+ 80004a4:	7c53      	ldrb	r3, [r2, #17]
+ 80004a6:	2b01      	cmp	r3, #1
+ 80004a8:	f000 80c5 	beq.w	8000636 <Hw_Timer_Tick+0x246>
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 80004ac:	8aa2      	ldrh	r2, [r4, #20]
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 80004ae:	69a1      	ldr	r1, [r4, #24]
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 80004b0:	8262      	strh	r2, [r4, #18]
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 80004b2:	4788      	blx	r1
+	
+	
+			   
+	for(i=0; i<TIMER_MAX; i++)								// 타이머 갯수만큼
+	{
+		if( Timer_Tbl[i].Timer_En == ON)   					// 타이머가 활성화 됬니?
+ 80004b4:	f894 0020 	ldrb.w	r0, [r4, #32]
+ 80004b8:	4a6d      	ldr	r2, [pc, #436]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 80004ba:	2801      	cmp	r0, #1
+ 80004bc:	d1b2      	bne.n	8000424 <Hw_Timer_Tick+0x34>
+		{
+			Timer_Tbl[i].Timer_Ctn--;  						// 타이머값 감소
+ 80004be:	8c53      	ldrh	r3, [r2, #34]	; 0x22
+ 80004c0:	1e59      	subs	r1, r3, #1
+ 80004c2:	b288      	uxth	r0, r1
+ 80004c4:	8450      	strh	r0, [r2, #34]	; 0x22
+
+			if(Timer_Tbl[i].Timer_Ctn == 0) 				// 타이머 오버플로어
+ 80004c6:	2800      	cmp	r0, #0
+ 80004c8:	d1ac      	bne.n	8000424 <Hw_Timer_Tick+0x34>
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+ 80004ca:	f892 3021 	ldrb.w	r3, [r2, #33]	; 0x21
+ 80004ce:	2b01      	cmp	r3, #1
+ 80004d0:	f000 80c7 	beq.w	8000662 <Hw_Timer_Tick+0x272>
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 80004d4:	8ca2      	ldrh	r2, [r4, #36]	; 0x24
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 80004d6:	6aa1      	ldr	r1, [r4, #40]	; 0x28
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 80004d8:	8462      	strh	r2, [r4, #34]	; 0x22
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 80004da:	4788      	blx	r1
+	
+	
+			   
+	for(i=0; i<TIMER_MAX; i++)								// 타이머 갯수만큼
+	{
+		if( Timer_Tbl[i].Timer_En == ON)   					// 타이머가 활성화 됬니?
+ 80004dc:	f894 0030 	ldrb.w	r0, [r4, #48]	; 0x30
+ 80004e0:	4a63      	ldr	r2, [pc, #396]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 80004e2:	2801      	cmp	r0, #1
+ 80004e4:	d1a3      	bne.n	800042e <Hw_Timer_Tick+0x3e>
+		{
+			Timer_Tbl[i].Timer_Ctn--;  						// 타이머값 감소
+ 80004e6:	8e53      	ldrh	r3, [r2, #50]	; 0x32
+ 80004e8:	1e59      	subs	r1, r3, #1
+ 80004ea:	b288      	uxth	r0, r1
+ 80004ec:	8650      	strh	r0, [r2, #50]	; 0x32
+
+			if(Timer_Tbl[i].Timer_Ctn == 0) 				// 타이머 오버플로어
+ 80004ee:	2800      	cmp	r0, #0
+ 80004f0:	d19d      	bne.n	800042e <Hw_Timer_Tick+0x3e>
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+ 80004f2:	f892 3031 	ldrb.w	r3, [r2, #49]	; 0x31
+ 80004f6:	2b01      	cmp	r3, #1
+ 80004f8:	f000 80b0 	beq.w	800065c <Hw_Timer_Tick+0x26c>
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 80004fc:	8ea2      	ldrh	r2, [r4, #52]	; 0x34
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 80004fe:	6ba1      	ldr	r1, [r4, #56]	; 0x38
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 8000500:	8662      	strh	r2, [r4, #50]	; 0x32
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 8000502:	4788      	blx	r1
+	
+	
+			   
+	for(i=0; i<TIMER_MAX; i++)								// 타이머 갯수만큼
+	{
+		if( Timer_Tbl[i].Timer_En == ON)   					// 타이머가 활성화 됬니?
+ 8000504:	f894 0040 	ldrb.w	r0, [r4, #64]	; 0x40
+ 8000508:	4a59      	ldr	r2, [pc, #356]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 800050a:	2801      	cmp	r0, #1
+ 800050c:	d194      	bne.n	8000438 <Hw_Timer_Tick+0x48>
+		{
+			Timer_Tbl[i].Timer_Ctn--;  						// 타이머값 감소
+ 800050e:	f8b2 3042 	ldrh.w	r3, [r2, #66]	; 0x42
+ 8000512:	1e59      	subs	r1, r3, #1
+ 8000514:	b288      	uxth	r0, r1
+ 8000516:	f8a2 0042 	strh.w	r0, [r2, #66]	; 0x42
+
+			if(Timer_Tbl[i].Timer_Ctn == 0) 				// 타이머 오버플로어
+ 800051a:	2800      	cmp	r0, #0
+ 800051c:	d18c      	bne.n	8000438 <Hw_Timer_Tick+0x48>
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+ 800051e:	f892 3041 	ldrb.w	r3, [r2, #65]	; 0x41
+ 8000522:	2b01      	cmp	r3, #1
+ 8000524:	f000 8097 	beq.w	8000656 <Hw_Timer_Tick+0x266>
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 8000528:	f8b4 2044 	ldrh.w	r2, [r4, #68]	; 0x44
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 800052c:	6ca1      	ldr	r1, [r4, #72]	; 0x48
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 800052e:	f8a4 2042 	strh.w	r2, [r4, #66]	; 0x42
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 8000532:	4788      	blx	r1
+	
+	
+			   
+	for(i=0; i<TIMER_MAX; i++)								// 타이머 갯수만큼
+	{
+		if( Timer_Tbl[i].Timer_En == ON)   					// 타이머가 활성화 됬니?
+ 8000534:	f894 0050 	ldrb.w	r0, [r4, #80]	; 0x50
+ 8000538:	4a4d      	ldr	r2, [pc, #308]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 800053a:	2801      	cmp	r0, #1
+ 800053c:	d181      	bne.n	8000442 <Hw_Timer_Tick+0x52>
+		{
+			Timer_Tbl[i].Timer_Ctn--;  						// 타이머값 감소
+ 800053e:	f8b2 3052 	ldrh.w	r3, [r2, #82]	; 0x52
+ 8000542:	1e59      	subs	r1, r3, #1
+ 8000544:	b288      	uxth	r0, r1
+ 8000546:	f8a2 0052 	strh.w	r0, [r2, #82]	; 0x52
+
+			if(Timer_Tbl[i].Timer_Ctn == 0) 				// 타이머 오버플로어
+ 800054a:	2800      	cmp	r0, #0
+ 800054c:	f47f af79 	bne.w	8000442 <Hw_Timer_Tick+0x52>
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+ 8000550:	f892 3051 	ldrb.w	r3, [r2, #81]	; 0x51
+ 8000554:	2b01      	cmp	r3, #1
+ 8000556:	d07b      	beq.n	8000650 <Hw_Timer_Tick+0x260>
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 8000558:	f8b4 2054 	ldrh.w	r2, [r4, #84]	; 0x54
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 800055c:	6da1      	ldr	r1, [r4, #88]	; 0x58
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 800055e:	f8a4 2052 	strh.w	r2, [r4, #82]	; 0x52
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 8000562:	4788      	blx	r1
+	
+	
+			   
+	for(i=0; i<TIMER_MAX; i++)								// 타이머 갯수만큼
+	{
+		if( Timer_Tbl[i].Timer_En == ON)   					// 타이머가 활성화 됬니?
+ 8000564:	f894 0060 	ldrb.w	r0, [r4, #96]	; 0x60
+ 8000568:	4a41      	ldr	r2, [pc, #260]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 800056a:	2801      	cmp	r0, #1
+ 800056c:	f47f af6f 	bne.w	800044e <Hw_Timer_Tick+0x5e>
+		{
+			Timer_Tbl[i].Timer_Ctn--;  						// 타이머값 감소
+ 8000570:	f8b2 3062 	ldrh.w	r3, [r2, #98]	; 0x62
+ 8000574:	1e59      	subs	r1, r3, #1
+ 8000576:	b288      	uxth	r0, r1
+ 8000578:	f8a2 0062 	strh.w	r0, [r2, #98]	; 0x62
+
+			if(Timer_Tbl[i].Timer_Ctn == 0) 				// 타이머 오버플로어
+ 800057c:	2800      	cmp	r0, #0
+ 800057e:	f47f af66 	bne.w	800044e <Hw_Timer_Tick+0x5e>
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+ 8000582:	f892 3061 	ldrb.w	r3, [r2, #97]	; 0x61
+ 8000586:	2b01      	cmp	r3, #1
+ 8000588:	d05f      	beq.n	800064a <Hw_Timer_Tick+0x25a>
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 800058a:	f8b4 2064 	ldrh.w	r2, [r4, #100]	; 0x64
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 800058e:	6ea1      	ldr	r1, [r4, #104]	; 0x68
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 8000590:	f8a4 2062 	strh.w	r2, [r4, #98]	; 0x62
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 8000594:	4788      	blx	r1
+	
+	
+			   
+	for(i=0; i<TIMER_MAX; i++)								// 타이머 갯수만큼
+	{
+		if( Timer_Tbl[i].Timer_En == ON)   					// 타이머가 활성화 됬니?
+ 8000596:	f894 0070 	ldrb.w	r0, [r4, #112]	; 0x70
+ 800059a:	4a35      	ldr	r2, [pc, #212]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 800059c:	2801      	cmp	r0, #1
+ 800059e:	f47f af5c 	bne.w	800045a <Hw_Timer_Tick+0x6a>
+		{
+			Timer_Tbl[i].Timer_Ctn--;  						// 타이머값 감소
+ 80005a2:	f8b2 3072 	ldrh.w	r3, [r2, #114]	; 0x72
+ 80005a6:	1e59      	subs	r1, r3, #1
+ 80005a8:	b288      	uxth	r0, r1
+ 80005aa:	f8a2 0072 	strh.w	r0, [r2, #114]	; 0x72
+
+			if(Timer_Tbl[i].Timer_Ctn == 0) 				// 타이머 오버플로어
+ 80005ae:	2800      	cmp	r0, #0
+ 80005b0:	f47f af53 	bne.w	800045a <Hw_Timer_Tick+0x6a>
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+ 80005b4:	f892 3071 	ldrb.w	r3, [r2, #113]	; 0x71
+ 80005b8:	2b01      	cmp	r3, #1
+ 80005ba:	d043      	beq.n	8000644 <Hw_Timer_Tick+0x254>
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 80005bc:	f8b4 2074 	ldrh.w	r2, [r4, #116]	; 0x74
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 80005c0:	6fa1      	ldr	r1, [r4, #120]	; 0x78
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 80005c2:	f8a4 2072 	strh.w	r2, [r4, #114]	; 0x72
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 80005c6:	4788      	blx	r1
+	
+	
+			   
+	for(i=0; i<TIMER_MAX; i++)								// 타이머 갯수만큼
+	{
+		if( Timer_Tbl[i].Timer_En == ON)   					// 타이머가 활성화 됬니?
+ 80005c8:	f894 0080 	ldrb.w	r0, [r4, #128]	; 0x80
+ 80005cc:	4a28      	ldr	r2, [pc, #160]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 80005ce:	2801      	cmp	r0, #1
+ 80005d0:	f47f af49 	bne.w	8000466 <Hw_Timer_Tick+0x76>
+		{
+			Timer_Tbl[i].Timer_Ctn--;  						// 타이머값 감소
+ 80005d4:	f8b2 3082 	ldrh.w	r3, [r2, #130]	; 0x82
+ 80005d8:	1e59      	subs	r1, r3, #1
+ 80005da:	b288      	uxth	r0, r1
+ 80005dc:	f8a2 0082 	strh.w	r0, [r2, #130]	; 0x82
+
+			if(Timer_Tbl[i].Timer_Ctn == 0) 				// 타이머 오버플로어
+ 80005e0:	2800      	cmp	r0, #0
+ 80005e2:	f47f af40 	bne.w	8000466 <Hw_Timer_Tick+0x76>
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+ 80005e6:	f892 3081 	ldrb.w	r3, [r2, #129]	; 0x81
+ 80005ea:	2b01      	cmp	r3, #1
+ 80005ec:	d027      	beq.n	800063e <Hw_Timer_Tick+0x24e>
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 80005ee:	f8b4 2084 	ldrh.w	r2, [r4, #132]	; 0x84
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 80005f2:	f8d4 1088 	ldr.w	r1, [r4, #136]	; 0x88
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 80005f6:	f8a4 2082 	strh.w	r2, [r4, #130]	; 0x82
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 80005fa:	4788      	blx	r1
+	
+	
+			   
+	for(i=0; i<TIMER_MAX; i++)								// 타이머 갯수만큼
+	{
+		if( Timer_Tbl[i].Timer_En == ON)   					// 타이머가 활성화 됬니?
+ 80005fc:	f894 0090 	ldrb.w	r0, [r4, #144]	; 0x90
+ 8000600:	4a1b      	ldr	r2, [pc, #108]	; (8000670 <Hw_Timer_Tick+0x280>)
+ 8000602:	2801      	cmp	r0, #1
+ 8000604:	f47f af35 	bne.w	8000472 <Hw_Timer_Tick+0x82>
+		{
+			Timer_Tbl[i].Timer_Ctn--;  						// 타이머값 감소
+ 8000608:	f8b2 3092 	ldrh.w	r3, [r2, #146]	; 0x92
+ 800060c:	1e59      	subs	r1, r3, #1
+ 800060e:	b288      	uxth	r0, r1
+ 8000610:	f8a2 0092 	strh.w	r0, [r2, #146]	; 0x92
+
+			if(Timer_Tbl[i].Timer_Ctn == 0) 				// 타이머 오버플로어
+ 8000614:	2800      	cmp	r0, #0
+ 8000616:	f47f af2c 	bne.w	8000472 <Hw_Timer_Tick+0x82>
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+ 800061a:	f892 3091 	ldrb.w	r3, [r2, #145]	; 0x91
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 800061e:	f8d4 1098 	ldr.w	r1, [r4, #152]	; 0x98
+		{
+			Timer_Tbl[i].Timer_Ctn--;  						// 타이머값 감소
+
+			if(Timer_Tbl[i].Timer_Ctn == 0) 				// 타이머 오버플로어
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+ 8000622:	2b01      	cmp	r3, #1
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+ 8000624:	bf08      	it	eq
+ 8000626:	f882 0090 	strbeq.w	r0, [r2, #144]	; 0x90
+
+				Timer_Tbl[i].Timer_Ctn = Timer_Tbl[i].Timer_Init; // 타이머 초기화
+ 800062a:	f8b4 2094 	ldrh.w	r2, [r4, #148]	; 0x94
+ 800062e:	f8a4 2092 	strh.w	r2, [r4, #146]	; 0x92
+
+				(*Timer_Tbl[i].TmrFnct)();  				// 전달변수 없이 함수 실행
+ 8000632:	4788      	blx	r1
+ 8000634:	bd10      	pop	{r4, pc}
+
+			if(Timer_Tbl[i].Timer_Ctn == 0) 				// 타이머 오버플로어
+			{
+				if(Timer_Tbl[i].Timer_Mode == ONE_TIME)  	// 한번만 실행하는거면
+
+				Timer_Tbl[i].Timer_En = OFF;     			// 타이머 OFF 한다.
+ 8000636:	7410      	strb	r0, [r2, #16]
+ 8000638:	e738      	b.n	80004ac <Hw_Timer_Tick+0xbc>
+ 800063a:	7020      	strb	r0, [r4, #0]
+ 800063c:	e724      	b.n	8000488 <Hw_Timer_Tick+0x98>
+ 800063e:	f882 0080 	strb.w	r0, [r2, #128]	; 0x80
+ 8000642:	e7d4      	b.n	80005ee <Hw_Timer_Tick+0x1fe>
+ 8000644:	f882 0070 	strb.w	r0, [r2, #112]	; 0x70
+ 8000648:	e7b8      	b.n	80005bc <Hw_Timer_Tick+0x1cc>
+ 800064a:	f882 0060 	strb.w	r0, [r2, #96]	; 0x60
+ 800064e:	e79c      	b.n	800058a <Hw_Timer_Tick+0x19a>
+ 8000650:	f882 0050 	strb.w	r0, [r2, #80]	; 0x50
+ 8000654:	e780      	b.n	8000558 <Hw_Timer_Tick+0x168>
+ 8000656:	f882 0040 	strb.w	r0, [r2, #64]	; 0x40
+ 800065a:	e765      	b.n	8000528 <Hw_Timer_Tick+0x138>
+ 800065c:	f882 0030 	strb.w	r0, [r2, #48]	; 0x30
+ 8000660:	e74c      	b.n	80004fc <Hw_Timer_Tick+0x10c>
+ 8000662:	f882 0020 	strb.w	r0, [r2, #32]
+ 8000666:	e735      	b.n	80004d4 <Hw_Timer_Tick+0xe4>
+ 8000668:	200000a4 	.word	0x200000a4
+ 800066c:	200000a8 	.word	0x200000a8
+ 8000670:	20000000 	.word	0x20000000
+
+08000674 <Hw_Timer_ISR>:
+void Hw_Timer_Setup( void );
+
+
+
+void Hw_Timer_ISR(void)
+{
+ 8000674:	b508      	push	{r3, lr}
+
+	Hw_Timer_Tick();  
+ 8000676:	f240 33f1 	movw	r3, #1009	; 0x3f1
+ 800067a:	f6c0 0300 	movt	r3, #2048	; 0x800
+ 800067e:	4798      	blx	r3
+ 8000680:	bd08      	pop	{r3, pc}
+ 8000682:	bf00      	nop
+
+08000684 <Hw_Timer_Set>:
+			void (*Fnct)(void),void *arg : 실행할 타이머 함수.
+     RET
+     	 	void
+---------------------------------------------------------------------------*/
+void Hw_Timer_Set(u8 TmrNum, u16 TmrData, u8 TmrMode, void (*Fnct)(void),void *arg)
+{
+ 8000684:	b410      	push	{r4}
+	Timer_Tbl[TmrNum].Timer_Mode = TmrMode;    // 모트설정
+ 8000686:	f240 0400 	movw	r4, #0
+ 800068a:	f2c2 0400 	movt	r4, #8192	; 0x2000
+ 800068e:	eb04 1000 	add.w	r0, r4, r0, lsl #4
+	Timer_Tbl[TmrNum].TmrFnct    = Fnct;       // 실행할 함수
+ 8000692:	6083      	str	r3, [r0, #8]
+	Timer_Tbl[TmrNum].TmrFnctArg = arg;        // 매개변수
+ 8000694:	9b01      	ldr	r3, [sp, #4]
+     RET
+     	 	void
+---------------------------------------------------------------------------*/
+void Hw_Timer_Set(u8 TmrNum, u16 TmrData, u8 TmrMode, void (*Fnct)(void),void *arg)
+{
+	Timer_Tbl[TmrNum].Timer_Mode = TmrMode;    // 모트설정
+ 8000696:	7042      	strb	r2, [r0, #1]
+	Timer_Tbl[TmrNum].TmrFnct    = Fnct;       // 실행할 함수
+	Timer_Tbl[TmrNum].TmrFnctArg = arg;        // 매개변수
+ 8000698:	60c3      	str	r3, [r0, #12]
+	Timer_Tbl[TmrNum].Timer_Ctn  = TmrData;
+ 800069a:	8041      	strh	r1, [r0, #2]
+	Timer_Tbl[TmrNum].Timer_Init = TmrData;
+ 800069c:	8081      	strh	r1, [r0, #4]
+}
+ 800069e:	bc10      	pop	{r4}
+ 80006a0:	4770      	bx	lr
+ 80006a2:	bf00      	nop
+
+080006a4 <Hw_Timer_Start>:
+     ARG
+     RET
+---------------------------------------------------------------------------*/
+void Hw_Timer_Start(u8 TmrNum)
+{
+	if(TmrNum < TIMER_MAX)
+ 80006a4:	2809      	cmp	r0, #9
+ 80006a6:	d803      	bhi.n	80006b0 <Hw_Timer_Start+0xc>
+		Timer_Tbl[TmrNum].Timer_En = ON;
+ 80006a8:	0100      	lsls	r0, r0, #4
+ 80006aa:	4b02      	ldr	r3, [pc, #8]	; (80006b4 <Hw_Timer_Start+0x10>)
+ 80006ac:	2201      	movs	r2, #1
+ 80006ae:	541a      	strb	r2, [r3, r0]
+ 80006b0:	4770      	bx	lr
+ 80006b2:	bf00      	nop
+ 80006b4:	20000000 	.word	0x20000000
+
+080006b8 <Hw_Led_On>:
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Led_On( u8 Ch )
+{	
+	switch( Ch )
+ 80006b8:	b940      	cbnz	r0, 80006cc <Hw_Led_On+0x14>
+	{
+		case 0:
+			SET_BIT( REG_GPIOG_ODR, 13 );
+ 80006ba:	f641 0114 	movw	r1, #6164	; 0x1814
+ 80006be:	f2c4 0102 	movt	r1, #16386	; 0x4002
+ 80006c2:	680b      	ldr	r3, [r1, #0]
+ 80006c4:	f443 5200 	orr.w	r2, r3, #8192	; 0x2000
+ 80006c8:	600a      	str	r2, [r1, #0]
+			break;
+ 80006ca:	4770      	bx	lr
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Led_On( u8 Ch )
+{	
+	switch( Ch )
+ 80006cc:	2801      	cmp	r0, #1
+ 80006ce:	d000      	beq.n	80006d2 <Hw_Led_On+0x1a>
+ 80006d0:	4770      	bx	lr
+		case 0:
+			SET_BIT( REG_GPIOG_ODR, 13 );
+			break;
+
+		case 1:
+			SET_BIT( REG_GPIOG_ODR, 14 );
+ 80006d2:	f641 0314 	movw	r3, #6164	; 0x1814
+ 80006d6:	f2c4 0302 	movt	r3, #16386	; 0x4002
+ 80006da:	681a      	ldr	r2, [r3, #0]
+ 80006dc:	f442 4080 	orr.w	r0, r2, #16384	; 0x4000
+ 80006e0:	6018      	str	r0, [r3, #0]
+ 80006e2:	4770      	bx	lr
+
+080006e4 <Hw_Led_Off>:
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Led_Off( u8 Ch )
+{
+	switch( Ch )
+ 80006e4:	b940      	cbnz	r0, 80006f8 <Hw_Led_Off+0x14>
+	{
+		case 0:
+			CLR_BIT( REG_GPIOG_ODR, 13 );
+ 80006e6:	f641 0114 	movw	r1, #6164	; 0x1814
+ 80006ea:	f2c4 0102 	movt	r1, #16386	; 0x4002
+ 80006ee:	680b      	ldr	r3, [r1, #0]
+ 80006f0:	f423 5200 	bic.w	r2, r3, #8192	; 0x2000
+ 80006f4:	600a      	str	r2, [r1, #0]
+ 80006f6:	4770      	bx	lr
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Led_Off( u8 Ch )
+{
+	switch( Ch )
+ 80006f8:	2801      	cmp	r0, #1
+ 80006fa:	d000      	beq.n	80006fe <Hw_Led_Off+0x1a>
+ 80006fc:	4770      	bx	lr
+		case 0:
+			CLR_BIT( REG_GPIOG_ODR, 13 );
+			break;
+
+		case 1:
+			CLR_BIT( REG_GPIOG_ODR, 14 );
+ 80006fe:	f641 0314 	movw	r3, #6164	; 0x1814
+ 8000702:	f2c4 0302 	movt	r3, #16386	; 0x4002
+ 8000706:	681a      	ldr	r2, [r3, #0]
+ 8000708:	f422 4080 	bic.w	r0, r2, #16384	; 0x4000
+ 800070c:	6018      	str	r0, [r3, #0]
+ 800070e:	4770      	bx	lr
+
+08000710 <Hw_Led_Init>:
+void Hw_Led_Init( void )
+{
+
+	//-- PG.13 
+	//
+	REG_GPIOG_MODER 	&= ~(0x03 << (13*2));	// PG.13 MODE Clear
+ 8000710:	f44f 51c0 	mov.w	r1, #6144	; 0x1800
+ 8000714:	f2c4 0102 	movt	r1, #16386	; 0x4002
+     WORK    : 
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Led_Init( void )
+{
+ 8000718:	b510      	push	{r4, lr}
+
+	//-- PG.13 
+	//
+	REG_GPIOG_MODER 	&= ~(0x03 << (13*2));	// PG.13 MODE Clear
+ 800071a:	680b      	ldr	r3, [r1, #0]
+ 800071c:	f023 6240 	bic.w	r2, r3, #201326592	; 0xc000000
+ 8000720:	600a      	str	r2, [r1, #0]
+	REG_GPIOG_MODER 	|=  (0x01 << (13*2));	// PG.13 General purpose output mode
+ 8000722:	680c      	ldr	r4, [r1, #0]
+	REG_GPIOG_OTYPER 	&= ~(0x01 << (13*1));	// PG.13 Output push-pull 
+ 8000724:	f641 0004 	movw	r0, #6148	; 0x1804
+ 8000728:	f2c4 0002 	movt	r0, #16386	; 0x4002
+{
+
+	//-- PG.13 
+	//
+	REG_GPIOG_MODER 	&= ~(0x03 << (13*2));	// PG.13 MODE Clear
+	REG_GPIOG_MODER 	|=  (0x01 << (13*2));	// PG.13 General purpose output mode
+ 800072c:	f044 6380 	orr.w	r3, r4, #67108864	; 0x4000000
+ 8000730:	600b      	str	r3, [r1, #0]
+	REG_GPIOG_OTYPER 	&= ~(0x01 << (13*1));	// PG.13 Output push-pull 
+ 8000732:	6804      	ldr	r4, [r0, #0]
+
+	REG_GPIOG_OSPEEDR 	&= ~(0x03 << (13*2));	// PG.13 SPEED Clear
+ 8000734:	f641 0208 	movw	r2, #6152	; 0x1808
+ 8000738:	f2c4 0202 	movt	r2, #16386	; 0x4002
+
+	//-- PG.13 
+	//
+	REG_GPIOG_MODER 	&= ~(0x03 << (13*2));	// PG.13 MODE Clear
+	REG_GPIOG_MODER 	|=  (0x01 << (13*2));	// PG.13 General purpose output mode
+	REG_GPIOG_OTYPER 	&= ~(0x01 << (13*1));	// PG.13 Output push-pull 
+ 800073c:	f424 5300 	bic.w	r3, r4, #8192	; 0x2000
+ 8000740:	6003      	str	r3, [r0, #0]
+
+	REG_GPIOG_OSPEEDR 	&= ~(0x03 << (13*2));	// PG.13 SPEED Clear
+ 8000742:	6814      	ldr	r4, [r2, #0]
+ 8000744:	f024 6340 	bic.w	r3, r4, #201326592	; 0xc000000
+ 8000748:	6013      	str	r3, [r2, #0]
+	REG_GPIOG_OSPEEDR 	|=  (0x03 << (13*2));	// PG.13 High speed
+ 800074a:	6814      	ldr	r4, [r2, #0]
+
+	REG_GPIOG_PUPDR 	&= ~(0x03 << (13*2));	// PG.13 Clear
+ 800074c:	f641 030c 	movw	r3, #6156	; 0x180c
+ 8000750:	f2c4 0302 	movt	r3, #16386	; 0x4002
+	REG_GPIOG_MODER 	&= ~(0x03 << (13*2));	// PG.13 MODE Clear
+	REG_GPIOG_MODER 	|=  (0x01 << (13*2));	// PG.13 General purpose output mode
+	REG_GPIOG_OTYPER 	&= ~(0x01 << (13*1));	// PG.13 Output push-pull 
+
+	REG_GPIOG_OSPEEDR 	&= ~(0x03 << (13*2));	// PG.13 SPEED Clear
+	REG_GPIOG_OSPEEDR 	|=  (0x03 << (13*2));	// PG.13 High speed
+ 8000754:	f044 6440 	orr.w	r4, r4, #201326592	; 0xc000000
+ 8000758:	6014      	str	r4, [r2, #0]
+
+	REG_GPIOG_PUPDR 	&= ~(0x03 << (13*2));	// PG.13 Clear
+ 800075a:	681c      	ldr	r4, [r3, #0]
+ 800075c:	f024 6440 	bic.w	r4, r4, #201326592	; 0xc000000
+ 8000760:	601c      	str	r4, [r3, #0]
+	REG_GPIOG_PUPDR 	|=  (0x01 << (13*2));	// PG.13 0:Float, 1:Pull-up, 2:Pull-down, 
+ 8000762:	681c      	ldr	r4, [r3, #0]
+ 8000764:	f044 6480 	orr.w	r4, r4, #67108864	; 0x4000000
+ 8000768:	601c      	str	r4, [r3, #0]
+	
+
+	//-- PG.14
+	//
+	REG_GPIOG_MODER 	&= ~(0x03 << (14*2));	// PG.14 MODE Clear
+ 800076a:	680c      	ldr	r4, [r1, #0]
+ 800076c:	f024 5440 	bic.w	r4, r4, #805306368	; 0x30000000
+ 8000770:	600c      	str	r4, [r1, #0]
+	REG_GPIOG_MODER 	|=  (0x01 << (14*2));	// PG.14 General purpose output mode
+ 8000772:	680c      	ldr	r4, [r1, #0]
+ 8000774:	f044 5480 	orr.w	r4, r4, #268435456	; 0x10000000
+ 8000778:	600c      	str	r4, [r1, #0]
+	REG_GPIOG_OTYPER 	&= ~(0x01 << (14*1));	// PG.14 Output push-pull 
+ 800077a:	6801      	ldr	r1, [r0, #0]
+ 800077c:	f421 4180 	bic.w	r1, r1, #16384	; 0x4000
+ 8000780:	6001      	str	r1, [r0, #0]
+
+	REG_GPIOG_OSPEEDR 	&= ~(0x03 << (14*2));	// PG.14 SPEED Clear
+ 8000782:	6810      	ldr	r0, [r2, #0]
+ 8000784:	f020 5140 	bic.w	r1, r0, #805306368	; 0x30000000
+ 8000788:	6011      	str	r1, [r2, #0]
+	REG_GPIOG_OSPEEDR 	|=  (0x03 << (14*2));	// PG.14 High speed
+ 800078a:	6810      	ldr	r0, [r2, #0]
+ 800078c:	f040 5140 	orr.w	r1, r0, #805306368	; 0x30000000
+ 8000790:	6011      	str	r1, [r2, #0]
+
+	REG_GPIOG_PUPDR 	&= ~(0x03 << (14*2));	// PG.14 Clear
+ 8000792:	681a      	ldr	r2, [r3, #0]
+ 8000794:	f022 5040 	bic.w	r0, r2, #805306368	; 0x30000000
+ 8000798:	6018      	str	r0, [r3, #0]
+	REG_GPIOG_PUPDR 	|=  (0x01 << (14*2));	// PG.14 0:Float, 1:Pull-up, 2:Pull-down, 		
+ 800079a:	6819      	ldr	r1, [r3, #0]
+void Hw_Led_Off( u8 Ch )
+{
+	switch( Ch )
+	{
+		case 0:
+			CLR_BIT( REG_GPIOG_ODR, 13 );
+ 800079c:	f641 0214 	movw	r2, #6164	; 0x1814
+ 80007a0:	f2c4 0202 	movt	r2, #16386	; 0x4002
+
+	REG_GPIOG_OSPEEDR 	&= ~(0x03 << (14*2));	// PG.14 SPEED Clear
+	REG_GPIOG_OSPEEDR 	|=  (0x03 << (14*2));	// PG.14 High speed
+
+	REG_GPIOG_PUPDR 	&= ~(0x03 << (14*2));	// PG.14 Clear
+	REG_GPIOG_PUPDR 	|=  (0x01 << (14*2));	// PG.14 0:Float, 1:Pull-up, 2:Pull-down, 		
+ 80007a4:	f041 5080 	orr.w	r0, r1, #268435456	; 0x10000000
+ 80007a8:	6018      	str	r0, [r3, #0]
+void Hw_Led_Off( u8 Ch )
+{
+	switch( Ch )
+	{
+		case 0:
+			CLR_BIT( REG_GPIOG_ODR, 13 );
+ 80007aa:	6811      	ldr	r1, [r2, #0]
+
+	REG_GPIOG_PUPDR 	&= ~(0x03 << (14*2));	// PG.14 Clear
+	REG_GPIOG_PUPDR 	|=  (0x01 << (14*2));	// PG.14 0:Float, 1:Pull-up, 2:Pull-down, 		
+
+	Hw_Led_Off(0);
+	Hw_Led_Off(1);	
+ 80007ac:	f240 63e5 	movw	r3, #1765	; 0x6e5
+void Hw_Led_Off( u8 Ch )
+{
+	switch( Ch )
+	{
+		case 0:
+			CLR_BIT( REG_GPIOG_ODR, 13 );
+ 80007b0:	f421 5000 	bic.w	r0, r1, #8192	; 0x2000
+ 80007b4:	6010      	str	r0, [r2, #0]
+
+	REG_GPIOG_PUPDR 	&= ~(0x03 << (14*2));	// PG.14 Clear
+	REG_GPIOG_PUPDR 	|=  (0x01 << (14*2));	// PG.14 0:Float, 1:Pull-up, 2:Pull-down, 		
+
+	Hw_Led_Off(0);
+	Hw_Led_Off(1);	
+ 80007b6:	f6c0 0300 	movt	r3, #2048	; 0x800
+ 80007ba:	2001      	movs	r0, #1
+ 80007bc:	4798      	blx	r3
+ 80007be:	bd10      	pop	{r4, pc}
+
+080007c0 <Hw_Led_Toggle>:
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Led_Toggle( u8 Ch )
+{
+	switch( Ch )
+ 80007c0:	b940      	cbnz	r0, 80007d4 <Hw_Led_Toggle+0x14>
+	{
+		case 0:
+			TGL_BIT( REG_GPIOG_ODR, 13 );
+ 80007c2:	f641 0114 	movw	r1, #6164	; 0x1814
+ 80007c6:	f2c4 0102 	movt	r1, #16386	; 0x4002
+ 80007ca:	680b      	ldr	r3, [r1, #0]
+ 80007cc:	f483 5200 	eor.w	r2, r3, #8192	; 0x2000
+ 80007d0:	600a      	str	r2, [r1, #0]
+			break;
+ 80007d2:	4770      	bx	lr
+     ARG     : void
+     RET     : void
+---------------------------------------------------------------------------*/
+void Hw_Led_Toggle( u8 Ch )
+{
+	switch( Ch )
+ 80007d4:	2801      	cmp	r0, #1
+ 80007d6:	d000      	beq.n	80007da <Hw_Led_Toggle+0x1a>
+ 80007d8:	4770      	bx	lr
+		case 0:
+			TGL_BIT( REG_GPIOG_ODR, 13 );
+			break;
+
+		case 1:
+			TGL_BIT( REG_GPIOG_ODR, 14 );
+ 80007da:	f641 0314 	movw	r3, #6164	; 0x1814
+ 80007de:	f2c4 0302 	movt	r3, #16386	; 0x4002
+ 80007e2:	681a      	ldr	r2, [r3, #0]
+ 80007e4:	f482 4080 	eor.w	r0, r2, #16384	; 0x4000
+ 80007e8:	6018      	str	r0, [r3, #0]
+ 80007ea:	4770      	bx	lr
